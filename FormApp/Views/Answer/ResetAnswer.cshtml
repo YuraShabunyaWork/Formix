@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "ResetAnswer";
+}
+<div class="container" style="max-width: 400px;">
+    <div class="text-center mb-4">
+        <p class="display-6 fw-bold">Reset Answer</p>
+    </div>
+    <div class="border border-1 rounded-3 shadow-sm p-4 bg-body-secondary bg-opacity-75">
+        <form asp-controller="Answer" asp-action="ResetAnswer" method="post">
+            <div class="mb-3">
+                <p class="fs-5 text-center">
+                    You have already filled out this form. Would you like to fill it out again?
+                    <br />
+                    <span class="text-muted">Your previous response will be deleted.</span>
+                </p>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success btn-lg me-3">Yes</button>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary btn-lg">No</a>
+            </div>
+        </form>
+    </div>
+</div>

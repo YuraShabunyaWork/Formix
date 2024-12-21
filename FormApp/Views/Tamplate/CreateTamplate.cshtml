@@ -1,0 +1,92 @@
+﻿@model TamplateViewModel
+<div class="container mb-3">
+    <p class="display-6 text-center">Create Form</p>
+    <form asp-controller="Tamplate" asp-action="CreateTamplate" method="post" enctype="multipart/form-data">
+        <div class="row d-flex align-items-start">
+            <div class="col-12 col-md-4 d-md-block border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small m-2">
+                <div class="d-flex justify-content-center">
+                    <img id="previewImage"
+                         src="@(Model == null ? "/Logo.png" : Model.UrlPhoto)"
+                         class="img-thumbnail rounded-2 border-0 mb-2 object-fit-cover"
+                         style="width: 250px; height: 250px; object-position: center;" />
+                    <input asp-for="UrlPhoto" type="hidden" />
+                </div>
+                <div class="mb-2">
+                    <div class="d-flex justify-content-center">
+                        <label for="fileUpload" class="btn btn-sm btn-outline-primary">
+                            Выберите файл
+                        </label>
+                        <input id="fileUpload" asp-for="FilePhoto" type="file" class="btn btn-sm btn-outline-primary d-none" />
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" type="text" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="mb-2">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="col-12 col-md border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small m-2">
+                <div>
+                    <div id="questions-container">
+                        @if (Model != null && Model.Questions != null)
+                        {
+                            foreach (var q in Model.Questions)
+                            {
+                                @await Html.PartialAsync("_GetQuestionPartialView", q)
+                                ;
+                            }
+                        }
+                        <div id="partialContainer"></div>
+                    </div>
+                    <div>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">
+                                <i class="bi bi-plus-circle"></i> Add
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <button name="action" value="1" class="btn btn-success dropdown-item addPartialBtn" type="button">
+                                        Text question
+                                    </button>
+                                </li>
+                                <li>
+                                    <button name="action" value="2" class="btn btn-success dropdown-item addPartialBtn" type="button">
+                                        Single choice question
+                                    </button>
+                                </li>
+                                <li>
+                                    <button name="action" value="3" class="btn btn-success dropdown-item addPartialBtn" type="button">
+                                        Multiple choice question
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <button type="submit" class="btn btn-success" id="create-button">Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/js/CreateInputForController.js"></script>
+<script src="~/js/CreateQuestion.js"></script>
+<script src="~/js/CreateOptionsAnswer.js"></script>
+<script>
+    document.getElementById('fileUpload').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImage').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>

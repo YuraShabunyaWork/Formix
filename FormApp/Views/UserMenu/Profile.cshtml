@@ -1,0 +1,32 @@
+﻿@model ProfileViewModel
+<h3 class="display-6 mb-4 ps-4" style="font-size:3rem">Your profile:</h3>
+<dil class="row">
+    <div class="col-4">
+        <img src="@Model.UrlPhoto" class="img-thumbnail border-0" />
+    </div>
+    <div class="col">
+        <div class="d-block">
+            <label class="h6">Full name:</label>
+            <label class="">@Model.FirstName @Model.LastName</label>
+        </div>
+        <div class="d-block">
+            <label asp-for="Login" class="h6"></label>
+            <label class="">@Model.Login</label>
+        </div>
+        <div class="d-block">
+            <label asp-for="Email" class="h6"></label>
+            <label class="">@Model.Email</label>
+        </div>
+        <div class="d-block">
+            <label asp-for="BirthDay" class="h6"></label>
+            <label class="">@Model.BirthDay.ToShortDateString()</label>
+        </div>
+        <div class="d-block">
+            <label asp-for="PhoneNumber" class="h6"></label>
+            <label class="">@Model.PhoneNumber</label>
+        </div>
+        <div class="d-block">
+            <a asp-controller="UserMenu" asp-action="EditProfile" class="btn btn-outline-primary">Edit</a>
+        </div>
+    </div>
+</dil>

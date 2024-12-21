@@ -1,0 +1,8 @@
+input::placeholder {
+    font-size: 12px;
+}
+
+.star {
+    color: mediumpurple;
+    cursor: pointer;
+}

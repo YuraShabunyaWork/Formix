@@ -1,0 +1,65 @@
+﻿@model ProfileViewModel
+<h3 class="display-6 mb-4 ps-4" style="font-size:3rem">Your profile:</h3>
+<form asp-controller="UserMenu" asp-action="EditProfile" method="post" enctype="multipart/form-data">
+    <div class="row g-3">
+        <div class="col-12 col-md-4 text-center">
+            <img id="previewImage"
+                 src="@Model.UrlPhoto"
+                 class="img-thumbnail border-0 mb-3 rounded-pill object-fit-cover"
+                 style="width: 100%; max-width:250px; object-position: center;" />
+            <input asp-for="UrlPhoto" type="hidden" />
+            <div>
+                <label for="fileUpload" class="btn btn-outline-primary">
+                    Choose File
+                </label>
+                <input id="fileUpload" asp-for="FilePhoto" type="file" class="d-none" />
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="mb-3">
+                <label asp-for="FirstName" class="form-label h6">First Name</label>
+                <input type="text" asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="LastName" class="form-label h6">Last Name</label>
+                <input type="text" asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Login" class="form-label h6">Login</label>
+                <input type="text" asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BirthDay" class="form-label h6">Date of Birth</label>
+                <input type="date" asp-for="BirthDay" class="form-control" />
+                <span asp-validation-for="BirthDay" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="PhoneNumber" class="form-label h6">Phone Number</label>
+                <input type="tel" asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-12 col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-success w-100">
+                <i class="bi bi-floppy"></i>
+                Save
+            </button>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.getElementById('fileUpload').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewImage').src = e.target.result;
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>

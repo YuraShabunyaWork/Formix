@@ -1,0 +1,43 @@
+﻿@model TamplateViewModel
+<div class="modal fade" id="@Model.Id-tamplate" tabindex="-1" aria-labelledby="tamplateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="tamplateModalLabel">Answers</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Login</th>
+                            <th>Data</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in Model.ListUsersAnsrews)
+                        {
+                            <tr>
+                                <td>@a.Login</td>
+                                <td>@a.DateTime</td>
+                                <td>
+                                    <form method="get" target="_blank">
+                                        <input type="hidden" name="tamplateId" value="@Model.Id"/>
+                                        <input type="hidden" name="login" value="@a.Login"/>
+                                        <button asp-action="OpenAnswerUser" asp-controller="UserMenu" type="submit" class="btn btn-outline-warning btn-sm text-black">
+                                            Open
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

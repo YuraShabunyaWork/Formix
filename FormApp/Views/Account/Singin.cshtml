@@ -1,0 +1,45 @@
+﻿@model SinginViewModel
+@{
+    ViewData["TitleForm"] = "Sing in";
+    Layout = "_LayoutAccount.cshtml";
+}
+
+<div class="container" style="width: 400px">
+    <div class="text-center">
+        <a asp-action="" asp-controller="">
+            <img src="~/logo.png" class="rounded-pill mb-2" style="height:15vh" />
+        </a>
+        <p class="display-6">Sing in to <span class="fw-bolder">Formix</span></p>
+    </div>
+    <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
+        <form asp-controller="Account" asp-action="Singin" method="post">
+            <div class="mb-2">
+                <label asp-for="LoginOrEmail" class="form-label"></label>
+                <input asp-for="LoginOrEmail" type="text" class="form-control" placeholder="Enter Login or Email" />
+                <span asp-validation-for="LoginOrEmail" class="text-danger small"></span>
+            </div>
+            <div class="mb-2">
+                <div class="d-flex justify-content-between">
+                    <label asp-for="Password" class="form-label"></label>
+                    <a asp-action="ForgotPassword" asp-controller="Account" tabindex="-1" class="small">Forgot your password?</a>
+                </div>
+                <div class="input-group">
+                    <input asp-for="Password" type="password" id="password" class="form-control" placeholder="Enter Password" />
+                    <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
+                        <i id="toggleIcon" class="bi bi-eye"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <input asp-for="RememberMe" type="checkbox" class="form-check-inline me-0" />
+                <label asp-for="RememberMe" class="form-check-label"></label>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Sing in</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/js/PasswordEye.js"></script>

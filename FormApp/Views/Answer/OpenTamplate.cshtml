@@ -1,0 +1,86 @@
+﻿@model TamplateViewModel
+<div class="container mb-3">
+    <div class="row d-flex align-items-start">
+        <div class="col-12 col-md-4 border border-1 rounded-3 shadow bg-opacity-50 p-4 m-1 bg-body-secondary">
+            <div class="d-flex justify-content-center">
+                <img id="previewImage"
+                     src="@(Model == null ? "/Logo.png" : Model.UrlPhoto)"
+                     class="img-thumbnail bg-body-secondary rounded-2 border-0 mb-2 object-fit-cover"
+                     style="width: 100%; max-width: 250px; height: 250px; object-position: center;" />
+            </div>
+            <div class="text-center mb-2">
+                <h2 class="form-label">@Model.Title</h2>
+            </div>
+            <div>
+                <p class="form-label text-center">@Model.Description</p>
+            </div>
+        </div>
+        <div class="col-12 col-md border border-1 rounded-3 shadow bg-opacity-50 p-4 m-1 bg-body-secondary">
+            <form asp-controller="Answer" asp-action="SendAnswerTamplate" method="post">
+                <div>
+                    <input type="hidden" name="answerView.TamplateId" value="@Model.Id" />
+                    @for (int q = 0; q < Model.Questions.Count; q++)
+                    {
+                        <label class="form-label">@Model.Questions[q].Title</label>
+                        @switch (Model.Questions[q].TypeQuestion)
+                        {
+                            case QuestionType.Text:
+                                <input class="form-control mb-2" name="answerView.Response[@q][0]" placeholder="Answer" />
+                                break;
+                            case QuestionType.SingleChoice:
+                                @for (int i = 0; i < Model.Questions[q].OptionsAnswer.Count; i++)
+                                {
+                                    <div class="form-check mb-2">
+                                        <input id="@q-@i" name="answerView.Response[@q][0]" @(i == 0 ? "checked='checked'" : "") value="@i" class="form-check-input" type="radio" />
+                                        <label for="@q-@i" class="form-check-label">@Model.Questions[q].OptionsAnswer[i]</label>
+                                    </div>
+                                }
+                                break;
+                            case QuestionType.MultipleChoice:
+                                @for (int i = 0; i < Model.Questions[q].OptionsAnswer.Count; i++)
+                                {
+                                    <div class="form-check mb-2">
+                                        <input id="@q-@i" name="answerView.Response[@q][@i]" value="1" class="form-check-input" type="checkbox" />
+                                        <input type="hidden" name="answerView.Response[@q][@i]" value="0" />
+                                        <label for="@q-@i" class="form-check-label">@Model.Questions[q].OptionsAnswer[i]</label>
+                                    </div>
+                                }
+                                break;
+                        }
+                    }
+                </div>
+                <div class="text-center mt-3">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <button type="submit" class="btn btn-success">Send answers</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+        <div>
+            <div class="border-bottom">
+                <h6>Comments:</h6>
+            </div>
+            @foreach (var review in Model.ListReviews)
+            {
+                <div class="row py-3 border-bottom">
+                    <div class="col-2 d-flex justify-content-center align-items-start">
+                        <img class="img-fluid rounded-circle shadow-sm" src="@review.UrlPhoto" alt="User Avatar" />
+                    </div>
+                    <div class="col">
+                        <div class="d-flex justify-content-between">
+                            <p class="fw-bold text-primary mb-1">@review.Login</p>
+                            <div class="d-flex">
+                                @for (int i = 0; i < review.Rating; i++)
+                                {
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                }
+                            </div>
+                        </div>
+                        <p class="text-muted mb-2" style="font-size: 0.9rem;">@review.Comment</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

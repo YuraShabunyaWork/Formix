@@ -1,0 +1,47 @@
+﻿@model List<TamplateViewModel>
+
+@if (Model.Count == 0)
+{
+    <h3 class="display-6 mb-4">Oops... You don't have any forms.</h3>
+}
+else
+{
+    <h3 class="display-6 mb-4">Your templates</h3>
+    <div class="container-lg w-75">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto">
+            @foreach (var tamplate in Model)
+            {
+                <div class="col mb-3">
+                    <div class="card h-100 d-flex flex-column">
+                        <form method="get" class="d-flex flex-column h-100">
+                            <input type="hidden" name="idTampalte" value="@tamplate.Id" />
+                            <div class="card-header d-flex justify-content-between">
+                                <button class="btn btn-outline-primary btn-sm" asp-controller="Tamplate" asp-action="EditTamplate" type="submit">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm" asp-controller="Tamplate" asp-action="DeleteTamplate" type="submit">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+                            </div>
+                            <div class="card-body flex-grow-1">
+                                <h5 class="card-title">@tamplate.Title</h5>
+                                <p class="card-text">@tamplate.Description</p>
+                            </div>
+                            <div class="card-footer mt-auto d-flex justify-content-between">
+                                <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#@tamplate.Id-review">
+                                    Reviews
+                                </button>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#@tamplate.Id-tamplate">
+                                    Answers
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                @await Html.PartialAsync("_GetAnswerUsersPartalView", tamplate)
+                @await Html.PartialAsync("_GetReviewUsersPartalView", tamplate)
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,67 @@
+﻿@model QuestionViewModel
+<div class="question-item">
+    <input class="d-none type-question" value="@Model.TypeQuestion" />
+    @switch (Model.TypeQuestion)
+    {
+        case QuestionType.Text:
+            <label class="form-label">Text question:</label>
+            break;
+        case QuestionType.SingleChoice:
+            <label class="form-label">Single choice question:</label>
+            break;
+        case QuestionType.MultipleChoice:
+            <label class="form-label">Multiple choice question:</label>
+            break;
+    }
+    <div class="mb-2 d-flex">
+        <div class="flex-grow-1 me-2">
+            <div class="d-flex">
+                <input value="@Model.Title" class="form-control me-2 question" />
+                <button class="btn btn-danger delete-btn" type="button" tabindex="-1">
+                    <i class="bi bi-trash3-fill"></i>
+                </button>
+            </div>
+            <div>
+                @if (Model.TypeQuestion == QuestionType.MultipleChoice
+                || Model.TypeQuestion == QuestionType.SingleChoice)
+                {
+                    <label class="form-label">Options answers:</label>
+                    <ul>
+                        @if (Model.OptionsAnswer.Count > 1)
+                        {
+                            <li>
+                                <input type="text" value="@Model.OptionsAnswer[0]" class="small form-control mt-1 options-question" />
+                            </li>
+                            <li>
+                                <input type="text" value="@Model.OptionsAnswer[1]" class="small form-control mt-1 options-question" />
+                            </li>
+                            @for (int i = 2; i < Model.OptionsAnswer.Count; i++)
+                            {
+                                <li>
+                                    <div class="d-flex mt-1">
+                                        <input type="text" value="@Model.OptionsAnswer[i]" class="form-control me-1 options-question" />
+                                        <button class="btn btn-danger btn-sm remove-option-btn" tabindex="-1" type="button">
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <input type="text" class="small form-control mt-1 options-question" />
+                            </li>
+                            <li>
+                                <input type="text" class="small form-control mt-1 options-question" />
+                            </li>
+                        }
+                    </ul>
+                    <button class="btn btn-sm btn-outline-success mt-2 add-option" type="button">
+                        <i class="bi bi-plus-circle"></i> Add Option
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+</div>
