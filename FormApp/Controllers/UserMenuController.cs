@@ -1,4 +1,6 @@
-﻿using Formix.Models.DB;
+﻿using Formix.Helper;
+using Formix.Models.DB;
+using Formix.Models.ViewModels.Account;
 using Formix.Models.ViewModels.Answer;
 using Formix.Models.ViewModels.Question;
 using Formix.Models.ViewModels.Tamplate;
@@ -16,14 +18,17 @@ namespace Formix.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ITamplateRepository _tamplateRepository;
         private readonly ICloudinaryService _cloudinaryService;
+        private readonly GenerateEmail _generateEmail;
 
         public UserMenuController(UserManager<AppUser> userManager,
             ITamplateRepository tamplateRepository,
-            ICloudinaryService cloudinaryService)
+            ICloudinaryService cloudinaryService,
+            GenerateEmail generateEmail)
         {
             _userManager = userManager;
             _tamplateRepository = tamplateRepository;
             _cloudinaryService = cloudinaryService;
+            _generateEmail = generateEmail;
         }
         
         [HttpGet]
@@ -71,11 +76,15 @@ namespace Formix.Controllers
                     Title = t.Title,
                     Description = t.Description,
                     UrlPhoto = t.UrlPhoto,
-                    ListUsersAnsrews = t.Answers.Select(a => new UsersAnsrewForTamplate
+                    ListUsersAnsrews = t.Answers
+                    .Select(a => new UsersAnsrewForTamplate
                     {
                         Login = _userManager.FindByIdAsync(a.AppUserId).Result.UserName,
+                        Email = _userManager.FindByIdAsync(a.AppUserId).Result.Email,
                         DateTime = a.DataAnswer
-                    }).ToList(),
+                    })
+                    .OrderByDescending(d => d.DateTime)
+                    .ToList(),
                     ListReviews = t.Reviews.Select(r => new ReviewViewModel
                     {
                         UrlPhoto = r.UrlPhoto,
@@ -91,16 +100,17 @@ namespace Formix.Controllers
         public async Task <IActionResult> OpenAnswerUser([FromQuery]int tamplateId, [FromQuery]string login)
         {
             var tamplate = await _tamplateRepository.GetTamplateAsync(tamplateId);
-            var userId = await _userManager.FindByNameAsync(login);
-            if (tamplate != null && userId != null)
+            var user = await _userManager.FindByNameAsync(login);
+            if (tamplate != null && user != null)
             {
-                var answerList = tamplate.Answers.Where(a => a.AppUserId == userId.Id)
+                var answerList = tamplate.Answers.Where(a => a.AppUserId == user.Id)
                             .Select(a => a.AnswersUser).FirstOrDefault();
                 if (answerList != null)
                 {
                     var userAnswer = new UserAnswerViewModel
                     {
-                        Login = login,
+                        Login = user.UserName,
+                        Email = user.Email,
                         Title = tamplate.Title,
                         Description = tamplate.Description,
                         UrlPhoto = tamplate.UrlPhoto,
@@ -156,15 +166,6 @@ namespace Formix.Controllers
 
             userApp.FirstName = profileView.FirstName;
             userApp.LastName = profileView.LastName;
-            if(await _userManager.FindByEmailAsync(profileView.Email) != null)
-            { 
-                userApp.Email = profileView.Email;
-            }
-            else
-            {
-                ModelState.AddModelError("Email", "Email is exist");
-                return View(profileView);
-            }
             if (await _userManager.FindByNameAsync(profileView.Login) != null)
             {
                 userApp.UserName = profileView.Login;
@@ -178,9 +179,9 @@ namespace Formix.Controllers
             userApp.PhoneNumber = profileView.PhoneNumber;
             userApp.UrlPhoto = profileView.UrlPhoto;
             var result = await _userManager.UpdateAsync(userApp);
-            TempData["urlPhoto"] = userApp.UrlPhoto;
             if (result.Succeeded)
             {
+                TempData["ToastMessage"] = "The profile has been changed successfully!";
                 return View("Profile", profileView);
             }
 
@@ -214,12 +215,19 @@ namespace Formix.Controllers
                 return RedirectToAction("Singup", "Account");
             }
             user.TwoFactorEnabled = settingsView.IsTwoFactor;
-            await _userManager.UpdateAsync(user);
-            
+            var result = await _userManager.UpdateAsync(user);
+            if (user.TwoFactorEnabled)
+            {
+                TempData["ToastMessage"] = "Two-factor authorization is enabled!";
+            }
+            else
+            {
+                TempData["ToastMessage"] = "Two-factor authorization is disabled!";
+            }
             return View("Settings", settingsView);
         }
         [HttpPost]
-        public async Task<IActionResult> RessetPassword(SettingsViewModel settingsView)
+        public async Task<IActionResult> ResetPassword(SettingsViewModel settingsView)
         {
             if(!ModelState.IsValid)
             {
@@ -235,6 +243,7 @@ namespace Formix.Controllers
             var result = await _userManager.ChangePasswordAsync(user, settingsView.OldPassword, settingsView.NewPassword);
             if (result.Succeeded)
             {
+                TempData["ToastMessage"] = "The password has been changed!";
                 return View("Settings", settingsView);
             }
             else
@@ -243,6 +252,26 @@ namespace Formix.Controllers
                 ModelState.AddModelError(error.Code, error.Description);
                 return View("Settings", settingsView);
             }
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ChangeEmail(SettingsViewModel settingsView)
+        {
+            string email = settingsView.Email;
+            if (await _userManager.FindByEmailAsync(email) != null)
+            {
+                ModelState.AddModelError("Email", "Such an Email already exists");
+                return View("Settings", settingsView);
+            }
+            var user = await _userManager.GetUserAsync(User);
+            TempData["ConfirmationCode"] = await _generateEmail.CodeAsync(email);
+            TempData["Action"] = "ChangeEmail";
+            var confirmationEmailView = new ConfirmationEmailViewModel
+            {
+                Email = email
+            };
+
+            return View("ConfirmationEmail", confirmationEmailView);
         }
     }
 }

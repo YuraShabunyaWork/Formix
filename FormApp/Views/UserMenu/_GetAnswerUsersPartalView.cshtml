@@ -2,15 +2,23 @@
 <div class="modal fade" id="@Model.Id-tamplate" tabindex="-1" aria-labelledby="tamplateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="tamplateModalLabel">Answers</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header d-flex justify-content-between">
+                <div>
+                    <h1 class="modal-title fs-5" id="tamplateModalLabel">Answers</h1>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search" id="searchInput" class="form-control" />
+                </div>
+                <div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
             </div>
             <div class="modal-body">
                 <table class="table">
                     <thead>
                         <tr>
                             <th>Login</th>
+                            <th>Email</th>
                             <th>Data</th>
                             <th></th>
                         </tr>
@@ -20,6 +28,7 @@
                         {
                             <tr>
                                 <td>@a.Login</td>
+                                <td>@a.Email</td>
                                 <td>@a.DateTime</td>
                                 <td>
                                     <form method="get" target="_blank">
@@ -41,3 +50,4 @@
         </div>
     </div>
 </div>
+<script src="~/js/SearchForUserAnswers.js"></script>

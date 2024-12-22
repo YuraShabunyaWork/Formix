@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Formix.Enums;
 using Formix.Services.Interfaces;
-using Formix.Models.ViewModels.Answer;
 using Formix.Models.ViewModels.Tamplate;
 using Formix.Models.ViewModels.Question;
 using Formix.Models.DB;
@@ -14,8 +13,6 @@ namespace Formix.Controllers
     public class TamplateController : Controller
     {
         private readonly ITamplateRepository _tamplateRepository;
-        private readonly IQuestionRepository _questionRepository;
-        private readonly IAnswerRepository _answerRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly ICloudinaryService _cloudinaryService;
 
@@ -26,8 +23,6 @@ namespace Formix.Controllers
             ICloudinaryService cloudinaryService)
         {
             _tamplateRepository = tamplateRepository;
-            _questionRepository = questionRepository;
-            _answerRepository = answerRepository;
             _userManager = userManager;
             _cloudinaryService = cloudinaryService;
         }
@@ -65,7 +60,10 @@ namespace Formix.Controllers
             };
 
             if(await _tamplateRepository.CreareTamplateAsync(tamplate))
+            {
+                TempData["ToastMessage"] = "The template has been created successfully!";
                 return RedirectToAction("OpenUserTamplates", "UserMenu");
+            }
 
             return View("CreateTamplate", tamplateCreate);
         }
@@ -87,7 +85,7 @@ namespace Formix.Controllers
                 if(await _tamplateRepository.DeleteTamplateAsync(tamplate))
                 {
                     await _cloudinaryService.DeletePhotoAsync(tamplate.UrlPhoto);
-                    //success
+                    TempData["ToastMessage"] = "The template has been deleted successfully!";
                     return RedirectToAction("OpenUserTamplates", "UserMenu");
                 }
             }
@@ -141,6 +139,7 @@ namespace Formix.Controllers
                 tamplate.Answers = new List<Answer>();
                 await _tamplateRepository.UpdateTamplateAsync(tamplate);
             }
+            TempData["ToastMessage"] = "The template has been updated successfully!";
             return RedirectToAction("OpenUserTamplates", "UserMenu");
         }
     }

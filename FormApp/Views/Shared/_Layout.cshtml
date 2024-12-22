@@ -13,7 +13,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header style="height:10vh">
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle border-bottom box-shadow fixed-top px-2 mb-1">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle border-bottom box-shadow fixed-top ps-3 pe-2 mb-1">
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div>
                     <a class="navbar-brand p-0" asp-controller="Home" asp-action="Index">
@@ -93,6 +93,24 @@
 
     <main role="main" class="container-fluid flex-grow-1 bg-white" style="min-height: 50px;">
         @RenderBody()
+
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            @if (TempData["ToastMessage"] != null)
+            {
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                        <div class="toast-header">
+                            <img src="~/Logo.png" class="rounded me-2 img-fluid" style="width:2vw;" alt="logo">
+                            <strong class="me-auto">FormiX</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            @TempData["ToastMessage"]
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </main>
 
     <footer class="border-top footer text-muted bg-light py-3">
@@ -105,5 +123,6 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/ShowToast.js"></script>
 </body>
 </html>

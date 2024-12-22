@@ -44,12 +44,17 @@ namespace Formix.Controllers
         [HttpPost]
         public async Task<IActionResult> RunUsers(List<string> selectedUsers, string action)
         {
-            var users = await Task.WhenAll(selectedUsers.Select(u => _userManager.FindByIdAsync(u)));
+            var users = new List<AppUser>();
+            foreach(var id in selectedUsers)
+            {
+                var user = await _userManager.FindByIdAsync(id);
+                if(user != null)
+                    users.Add(user);
+            }
             foreach (var user in users)
             {
                 if (user != null)
                 {
-
                     switch (action)
                     {
                         case "lock":
@@ -70,6 +75,7 @@ namespace Formix.Controllers
                     }
                 }
             }
+            TempData["ToastMessage"] = "Data saved successfully!";
             return await RunUsers();
         }
 

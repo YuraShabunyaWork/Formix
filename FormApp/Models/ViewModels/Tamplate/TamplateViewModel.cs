@@ -1,5 +1,4 @@
-﻿using Formix.Models.DB;
-using Formix.Models.ViewModels.Answer;
+﻿using Formix.Models.ViewModels.Answer;
 using Formix.Models.ViewModels.Question;
 using System.ComponentModel.DataAnnotations;
 

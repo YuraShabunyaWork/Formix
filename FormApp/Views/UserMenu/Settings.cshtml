@@ -7,7 +7,7 @@
     <div class="col-4 d-none d-md-block">
         <img src="@Model.UrlPhoto" class="img-thumbnail border-0 w-100" />
     </div>
-    <div class="col-12 col-md">
+    <div class="col-12 col-md p-1">
         <div class="row-cols-1 mb-2">
             <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
                 <h5>Two-factor authentication</h5>
@@ -30,10 +30,15 @@
             <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
                 <h5>Change email address</h5>
                 <form asp-controller="UserMenu" asp-action="ChangeEmail" method="post">
+                    <input asp-for="UrlPhoto" type="hidden" />
                     <div class="d-block mb-2">
                         <label asp-for="Email" class="h6"></label>
-                        <input asp-for="Email" type="hidden" />
                         <label>@Model.Email</label>
+                    </div>
+                    <div class="d-block mb-2">
+                        <label class="mb-2">Enter new Email</label>
+                        <input asp-for="Email" value="" type="email" class="form-control"/>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
                     <div>
                         <button type="submit" class="btn btn-outline-primary">Change</button>
@@ -42,7 +47,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-md">
+    <div class="col-12 col-md p-1 me-3">
             <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
                 <h5>Reset Password</h5>
                 <form asp-controller="UserMenu" asp-action="ResetPassword" method="post">
@@ -55,7 +60,8 @@
                             <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
                                 <i id="toggleIcon" class="bi bi-eye"></i>
                             </button>
-                        </div>  
+                        </div>
+                    <span asp-validation-for="OldPassword" class="text-danger small"></span>
                     </div>
                     <div class="mb-2">
                         <label asp-for="NewPassword" class="form-label"></label>
@@ -75,7 +81,6 @@
                             </button>
                         </div>
                     </div>
-                    <div asp-validation-summary="All" class="text-danger small"></div>
                     <div class="d-block">
                         <button type="submit" class="btn btn-outline-primary w-100">Reset</button>
                     </div>

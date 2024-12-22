@@ -1,6 +1,7 @@
 ﻿using Formix.Helper;
 using Formix.Models.DB;
 using Formix.Models.ViewModels.Account;
+using Formix.Models.ViewModels.UserMenu;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -263,6 +264,20 @@ namespace Formix.Controllers
                                          result.IsLockedOut ? "User locked" : "Wrong password");
 
                 return View("Singin", new SinginViewModel { });
+            }
+            if(action == "ChangeEmail" && model.Email != null)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null)
+                {
+                    user.Email = model.Email;
+                    var result = await _userManager.UpdateAsync(user);
+                    if(result.Succeeded)
+                    {
+                        TempData["ToastMessage"] = "Email updated!";
+                        return RedirectToAction("Settings", "UserMenu");
+                    }
+                }
             }
 
             return View();

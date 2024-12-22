@@ -81,7 +81,7 @@ namespace Formix.Controllers
             if(await _answerRepository.AnswerForUserExistsAsync(user.Id, tamplateId))
             {
                 await _answerRepository.DeleteAwswerAsync(user.Id, tamplateId);
-                await _reviewRepository.DeleteReviewUserForTamplate(user.UserName!, tamplateId);
+                await _reviewRepository.DeleteReviewUserForTamplate(user.UserName, tamplateId);
             }
 
             return RedirectToAction("OpenTamplate", "Answer", new { idTamplate = tamplateId });
@@ -135,7 +135,7 @@ namespace Formix.Controllers
                 Login = user.UserName,
                 TamplateId = reviewView.TamplateId,
                 Rating = reviewView.Rating,
-                Comment = reviewView.Comment,
+                Comment = reviewView.Comment??"",
                 UrlPhoto = user.UrlPhoto
             };
             await _reviewRepository.CreateReviewAsync(review);

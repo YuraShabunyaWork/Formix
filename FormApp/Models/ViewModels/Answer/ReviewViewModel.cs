@@ -1,4 +1,6 @@
-﻿namespace Formix.Models.ViewModels.Answer
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Formix.Models.ViewModels.Answer
 {
     public class ReviewViewModel
     {
@@ -6,6 +8,6 @@
         public string Login { get; set; }
         public string UrlPhoto { get; set; }
         public int Rating { get; set; }
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
     }
 }

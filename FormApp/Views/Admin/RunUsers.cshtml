@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["TitleForm"]</title>
+    <title>Run User</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -17,7 +17,7 @@
     <header>
         <nav class="navbar border-bottom box-shadow bg-light px-5">
             <div class="container-fluid">
-                <div>
+                <div class="d-flex">
                     <div class="btn-group me-3">
                         <button type="submit" form="userForm" name="action" value="lock" class="btn btn-primary">
                             <i class="bi bi-lock-fill"></i>
@@ -26,16 +26,16 @@
                             <i class="bi bi-unlock-fill"></i>
                         </button>
                     </div>
-                    <div class="btn-group">
+                    <div class="btn-group me-3">
                         <button type="submit" form="userForm" name="action" value="makeAdmin" class="btn btn-success">Set Admin</button>
                         <button type="submit" form="userForm" name="action" value="makeUser" class="btn btn-outline-primary">Set User</button>
                         <button type="submit" form="userForm" name="action" value="delete" class="btn btn-danger">
                             <i class="bi bi-trash3-fill"></i>
                         </button>
                     </div>
-                </div>
-                <div>
-                    <input type="text" class="form-control" placeholder="Searth" />
+                    <div>
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search" />
+                    </div>
                 </div>
                 <div>
                     <a asp-controller="" asp-action="" type="button" class="btn btn-danger">Exit</a>
@@ -49,7 +49,7 @@
             <thead>
                 <tr>
                     <th>
-                        <input type="checkbox" />
+                        <input type="checkbox" id="selectAll" />
                     </th>
                     <th>
                         Login
@@ -89,6 +89,23 @@
             </tbody>
         </table>
         </form>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            @if (TempData["ToastMessage"] != null)
+            {
+                <div class="toast-container position-fixed bottom-0 end-0 p-3">
+                    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                        <div class="toast-header">
+                            <img src="~/Logo.png" class="rounded me-2 img-fluid" style="width:2vw;" alt="logo">
+                            <strong class="me-auto">FormiX</strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            @TempData["ToastMessage"]
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </main>
     <footer class="border-top footer text-muted bg-light py-3">
         <div class="container">
@@ -97,7 +114,27 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.17.0/jquery.validate.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.10/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/SearchForUser.js"></script>
+    <script src="~/js/ShowToast.js"></script>
+    <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            selectAllCheckbox.addEventListener('change', function () {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function () {
+                    if (!checkbox.checked) {
+                        selectAllCheckbox.checked = false;
+                    } else if (Array.from(checkboxes).every(cb => cb.checked)) {
+                        selectAllCheckbox.checked = true;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
