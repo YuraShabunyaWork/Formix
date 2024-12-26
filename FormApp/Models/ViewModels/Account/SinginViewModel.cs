@@ -6,9 +6,8 @@ namespace Formix.Models.ViewModels.Account
     {
         [Required]
         [Display(Name = "Login or Email")]
-        [RegularExpression("abcdefghijklmnopqrstuvwxyz-._1234567890@",
-            ErrorMessage = "The login must contain only small letters.")]
-
+        [RegularExpression("^[a-z0-9\\-._@]+$",
+            ErrorMessage = "The login must contain only small letters, digits and special characters( - . _ @ )")]
         public string LoginOrEmail { get; set; }
 
         [Required]

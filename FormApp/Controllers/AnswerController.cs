@@ -124,6 +124,11 @@ namespace Formix.Controllers
         [Authorize]
         public async Task<IActionResult> Review(ReviewViewModel reviewView)
         {
+            if (reviewView.Rating < 1)
+            {
+                ModelState.AddModelError("Rating", "Select rating");
+                return View("Review", reviewView);
+            }
             var user = await _userManager.GetUserAsync(User);
             if (user == null) 
             {
