@@ -45,6 +45,7 @@ namespace Formix.Services.Repository
         public async Task<List<Tamplate>> GetTamplatesAsync()
         {
             return await _db.Tamplates
+                .Include(t => t.Answers)
                 .Include(t => t.Reviews)
                 .ToListAsync();
         }

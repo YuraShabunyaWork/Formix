@@ -128,14 +128,18 @@ namespace Formix.Controllers
                 var tamplate = await _tamplateRepository.GetTamplateAsync(tamplateView.Id);
                 tamplate.Title = tamplateView.Title;
                 tamplate.Description = tamplateView.Description;
-                await _cloudinaryService.DeletePhotoAsync(tamplate.UrlPhoto);
-                tamplate.UrlPhoto = await _cloudinaryService.UploadPhotoAsync(tamplateView.FilePhoto);
+                if (tamplateView.FilePhoto != null && tamplateView.FilePhoto.Length > 0)
+                {
+                    await _cloudinaryService.DeletePhotoAsync(tamplate.UrlPhoto);
+                    tamplate.UrlPhoto = await _cloudinaryService.UploadPhotoAsync(tamplateView.FilePhoto);
+                }
                 tamplate.Questions = tamplateView.Questions.Select(q => new Question
                 {
                     Title = q.Title,
                     TypeQuestion = q.TypeQuestion,
                     OptionsAnswerList = q.OptionsAnswer,
                 }).ToList();
+                tamplate.Reviews = new List<Review>();
                 tamplate.Answers = new List<Answer>();
                 await _tamplateRepository.UpdateTamplateAsync(tamplate);
             }

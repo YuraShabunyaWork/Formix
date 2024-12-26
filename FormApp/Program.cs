@@ -48,7 +48,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequiredLength = 5;
     options.User.RequireUniqueEmail = true;
-    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz-._1234567890";
+    options.User.AllowedUserNameCharacters = "^[a-z0-9\\-._]+$";
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
 });

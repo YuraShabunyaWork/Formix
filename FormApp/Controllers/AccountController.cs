@@ -1,7 +1,6 @@
 ﻿using Formix.Helper;
 using Formix.Models.DB;
 using Formix.Models.ViewModels.Account;
-using Formix.Models.ViewModels.UserMenu;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

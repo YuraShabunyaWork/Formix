@@ -5,6 +5,8 @@ namespace Formix.Models.ViewModels.Account
     public class SingupViewModel
     {
         [Required]
+        [RegularExpression("^[a-z0-9\\-._]+$",
+            ErrorMessage = "The login must contain only small letters.")]
         public string? Login { get; set; }
 
         [Required]

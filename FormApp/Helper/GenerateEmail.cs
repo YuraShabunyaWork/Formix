@@ -23,12 +23,18 @@ namespace Formix.Helper
         }
         public async Task LinkAsync(string email, string callbackUrl)
         {
-            await _sendGridEmail.SendEmailAsync(email, "Reset Email Confirmation",
-            $"Dear user,</br></br>" +
-            $"We received a request to reset your password for the <strong>FormiX</strong> application.</br>" +
-            $"You can reset your password by clicking on the link below:</br></br>" +
-            $"<a href=\"{callbackUrl}\" style=\"color: #6A0DAD; text-decoration: none; font-weight: bold;\">Reset Password</a></br></br>" +
-            $"If you did not request a password reset, please ignore this message or contact support for assistance.");
+            string message = $@"
+            <html>
+                <body style=""font-family: Arial, sans-serif; line-height: 1.5;"">
+                    <p>Dear user,</p>
+                    <p>We received a request to reset your password for the <strong>FormiX</strong> application.</p>
+                    <p>You can reset your password by clicking on the link below:</p>
+                    <p><a href=""{callbackUrl}"" style=""color: #6A0DAD; text-decoration: none; font-weight: bold;"">Reset Password</a></p>
+                    <p>If you did not request a password reset, please ignore this message or contact support for assistance.</p>
+                </body>
+            </html>";
+
+            await _sendGridEmail.SendEmailAsync(email, "Reset Email Confirmation", message);
         }
     }
 }

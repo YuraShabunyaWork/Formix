@@ -1,16 +1,17 @@
 ﻿@model ProfileViewModel
 <h3 class="display-6 mb-4 ps-4" style="font-size:3rem">Your profile:</h3>
 <form asp-controller="UserMenu" asp-action="EditProfile" method="post" enctype="multipart/form-data">
+    <input asp-for="Email" type="hidden"/>
     <div class="row g-3">
         <div class="col-12 col-md-4 text-center">
             <img id="previewImage"
                  src="@Model.UrlPhoto"
                  class="img-thumbnail border-0 mb-3 rounded-pill object-fit-cover"
-                 style="width: 100%; max-width:250px; object-position: center;" />
+                 style="width: 80%; height:50vh; object-position: center;" />
             <input asp-for="UrlPhoto" type="hidden" />
             <div>
                 <label for="fileUpload" class="btn btn-outline-primary">
-                    Choose File
+                    Choose Photo
                 </label>
                 <input id="fileUpload" asp-for="FilePhoto" type="file" class="d-none" />
             </div>

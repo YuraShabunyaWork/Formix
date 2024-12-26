@@ -11,15 +11,14 @@ namespace Formix.Models.ViewModels.UserMenu
         [Required]
         [Display(Name = "Login:")]
         public string Login { get; set; }
-        [Required]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email:")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
         [Display(Name = "Birthday:")]
         public DateTime BirthDay { get; set; }
         [Display(Name = "Phone number:")]
         public string? PhoneNumber { get; set; }
         public string UrlPhoto { get; set; }
-        public IFormFile FilePhoto { get; set; }
+        public IFormFile? FilePhoto { get; set; }
     }
 }

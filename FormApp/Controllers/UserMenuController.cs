@@ -6,9 +6,11 @@ using Formix.Models.ViewModels.Question;
 using Formix.Models.ViewModels.Tamplate;
 using Formix.Models.ViewModels.UserMenu;
 using Formix.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Formix.Controllers
 {
@@ -16,16 +18,19 @@ namespace Formix.Controllers
     public class UserMenuController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly ITamplateRepository _tamplateRepository;
         private readonly ICloudinaryService _cloudinaryService;
         private readonly GenerateEmail _generateEmail;
 
         public UserMenuController(UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
             ITamplateRepository tamplateRepository,
             ICloudinaryService cloudinaryService,
             GenerateEmail generateEmail)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _tamplateRepository = tamplateRepository;
             _cloudinaryService = cloudinaryService;
             _generateEmail = generateEmail;
@@ -181,6 +186,13 @@ namespace Formix.Controllers
             var result = await _userManager.UpdateAsync(userApp);
             if (result.Succeeded)
             {
+                var userPrincipal = await _signInManager.CreateUserPrincipalAsync(userApp);
+                var claimsIdentity = userPrincipal.Identity as ClaimsIdentity;
+                claimsIdentity?.AddClaim(new Claim("ProfilePhotoUrl", userApp.UrlPhoto ?? "/AvaDef.png"));
+
+                await _signInManager.Context.SignInAsync(
+                    IdentityConstants.ApplicationScheme,
+                    userPrincipal);
                 TempData["ToastMessage"] = "The profile has been changed successfully!";
                 return View("Profile", profileView);
             }
