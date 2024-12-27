@@ -51,6 +51,7 @@ namespace Formix.Controllers
                     Id = idTamplate,
                     UrlPhoto = tamplate.UrlPhoto,
                     Rating = tamplate.RatingTamplate,
+                    TamplateType = tamplate.TamplateType,
                     Questions = tamplate.Questions.Select(q => new QuestionViewModel
                     {
                         Title = q.Title,

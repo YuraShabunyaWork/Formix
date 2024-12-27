@@ -1,4 +1,5 @@
-﻿using Formix.Models.ViewModels.Answer;
+﻿using Formix.Enam;
+using Formix.Models.ViewModels.Answer;
 using Formix.Models.ViewModels.Question;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,8 +15,11 @@ namespace Formix.Models.ViewModels.Tamplate
 
         [MaxLength(500)]
         public string? Description { get; set; }
-        public string? UrlPhoto { get; set; } 
-        public IFormFile FilePhoto { get; set; }
+        [Required(ErrorMessage = "Please select a topic.")]
+        [Range(1, 9, ErrorMessage = "Invalid topic selected.")]
+        public TamplateType TamplateType { get; set; }
+        public string UrlPhoto { get; set; } = "/Logo.png";
+        public IFormFile? FilePhoto { get; set; }
         [Required]
         public List<QuestionViewModel> Questions { get; set; }
         public List<UsersAnsrewForTamplate> ListUsersAnsrews { get; set; } = new();

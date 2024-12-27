@@ -13,9 +13,16 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header style="height:10vh">
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle border-bottom box-shadow fixed-top ps-3 pe-2 mb-1">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle border-bottom box-shadow fixed-top ps-0 pe-2 mb-1">
             <div class="d-flex justify-content-between align-items-center w-100">
-                <div>
+                <div class="d-flex align-items-center">
+                    <button type="button"
+                        class="btn px-2 mx-1 rounded-pill"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasLeft"
+                            aria-controls="offcanvasLeft">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     <a class="navbar-brand p-0" asp-controller="Home" asp-action="Index">
                         <img src="~/logo.png" class="rounded-pill" style="height:6vh;" />
                         FormiX
@@ -26,6 +33,18 @@
                     <div class="d-flex w-100 justify-content-between align-items-center">
                         <div>
                             <a asp-controller="Tamplate" asp-action="CreateTamplate" class="btn btn-warning btn-sm">Create Form</a>
+                        </div>
+                        <div class="w-50">
+                            <form asp-action="Search" asp-controller="Home" method="get">
+                                <div class="input-group rounded w-50">
+                                        <input class="form-control border-0 rounded-end-0" 
+                                           placeholder="Search"
+                                           name="search" />
+                                    <button type="submit" class="btn btn-light">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                         <div>
                             @if (User.IsInRole("admin"))
@@ -59,7 +78,7 @@
 
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas offcanvas-end" style="min-width:20vw; max-width: 30vw;" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasRightLabel">@User.Identity.Name</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -89,6 +108,35 @@
                 </div>
             </div>
         }
+        <div class="offcanvas offcanvas-start" style="min-width:20vw; max-width: 30vw;" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
+            <div class="offcanvas-header p-0 ms-1 mb-0" style="height:10vh">
+                <div class="d-flex align-items-center">
+                    <button type="button" class="btn px-2 py-0 rounded-pill" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <i class="bi bi-list" style="font-size: 1.7rem;"></i>
+                    </button>
+                    <h5 class="offcanvas-title" id="offcanvasRightLabel">Menu</h5>
+                </div>
+            </div>
+            <form asp-action="OpenTemplatesByCategory" asp-controller="Home" method="get">
+                <div class="offcanvas-body py-0">
+                    <div class="border-bottom">
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="0">All Templates</button>
+                    </div>
+                    <p class="text-muted small m-0">category:</p>
+                    <div>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="1">Education</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="2">Quiz</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="3">Marketing</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="4">Events</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="5">Recruiting</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="6">Health</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="7">Research</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="8">Social</button>
+                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="9">Other</button>
+                    </div>                
+                </div>
+            </form>
+        </div>
     </header>
 
     <main role="main" class="container-fluid flex-grow-1 bg-white" style="min-height: 50px;">

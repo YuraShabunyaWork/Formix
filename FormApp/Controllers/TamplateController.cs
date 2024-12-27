@@ -104,6 +104,7 @@ namespace Formix.Controllers
                     Description = tamplate.Description,
                     Id = tamplate.Id,
                     UrlPhoto = tamplate.UrlPhoto,
+                    TamplateType = tamplate.TamplateType,
                     Questions = tamplate.Questions.Select(q => new QuestionViewModel
                     {
                         Title = q.Title,
@@ -121,13 +122,17 @@ namespace Formix.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> UpdateTamplate([FromForm]TamplateViewModel tamplateView)
+        public async Task<IActionResult> EditTamplate([FromForm]TamplateViewModel tamplateView)
         {
+            if (!ModelState.IsValid)
+                return View(tamplateView);
+
             if (await _tamplateRepository.TamplateExistsAsync(tamplateView.Id))
             {
                 var tamplate = await _tamplateRepository.GetTamplateAsync(tamplateView.Id);
                 tamplate.Title = tamplateView.Title;
                 tamplate.Description = tamplateView.Description;
+                tamplate.TamplateType = tamplateView.TamplateType;
                 if (tamplateView.FilePhoto != null && tamplateView.FilePhoto.Length > 0)
                 {
                     await _cloudinaryService.DeletePhotoAsync(tamplate.UrlPhoto);

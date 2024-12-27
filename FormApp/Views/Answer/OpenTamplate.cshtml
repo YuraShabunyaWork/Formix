@@ -2,17 +2,35 @@
 <div class="container mb-3">
     <div class="row d-flex align-items-start">
         <div class="col-12 col-md-4 border border-1 rounded-3 shadow bg-opacity-50 p-4 m-1 bg-body-secondary">
+            <div>
+                <p class="form-label text-center mb-0">topic: <span class="fw-bold">@Model.TamplateType</span></p>
+            </div>
+            <div class="d-flex justify-content-center mb-1">
+                @for (float j = Model.Rating; j > 0; j--)
+                {
+                    <h4 class="m-1">
+                        @if (j >= 1)
+                        {
+                            <i class="bi bi-star-fill star"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-star-half star"></i>
+                        }
+                    </h4>
+                }
+            </div>
             <div class="d-flex justify-content-center">
                 <img id="previewImage"
                      src="@(Model == null ? "/Logo.png" : Model.UrlPhoto)"
                      class="img-thumbnail bg-body-secondary rounded-2 border-0 mb-2 object-fit-cover"
                      style="width: 100%; max-width: 250px; height: 250px; object-position: center;" />
             </div>
-            <div class="text-center mb-2">
-                <h2 class="form-label">@Model.Title</h2>
+            <div class="text-center mb-3">
+                <h4 class="form-label">@Model.Title</h4>
             </div>
             <div>
-                <p class="form-label text-center">@Model.Description</p>
+                <p class="form-label px-3">@Model.Description</p>
             </div>
         </div>
         <div class="col-12 col-md border border-1 rounded-3 shadow bg-opacity-50 p-4 m-1 bg-body-secondary">
@@ -57,15 +75,15 @@
         </div>
     </div>
     <div class="d-flex justify-content-center mt-3">
-        <div class="w-50">
+        <div class="w-auto" style="max-width:60%; min-width:300px">
             <div class="border-bottom">
                 <h6>Comments:</h6>
             </div>
             @foreach (var review in Model.ListReviews)
             {
-                <div class="row py-3 border-bottom">
-                    <div class="col-2 d-flex justify-content-center align-items-start">
-                        <img class="img-fluid rounded-circle shadow-sm" src="@review.UrlPhoto" alt="User Avatar" />
+                <div class="row py-2 border-bottom">
+                    <div class="col-2 px-1 px-md-2 px-lg-4 h-100 d-flex justify-content-center align-items-start">
+                        <img class="img-fluid rounded-circle shadow" src="@review.UrlPhoto" alt="User Avatar" />
                     </div>
                     <div class="col">
                         <div class="d-flex justify-content-between">

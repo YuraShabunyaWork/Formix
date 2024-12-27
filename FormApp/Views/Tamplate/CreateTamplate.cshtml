@@ -9,15 +9,30 @@
                          src="@(Model == null ? "/Logo.png" : Model.UrlPhoto)"
                          class="img-thumbnail rounded-2 border-0 mb-2 object-fit-cover"
                          style="width: 250px; height: 250px; object-position: center;" />
-                    <input asp-for="UrlPhoto" type="hidden" />
+                    <input asp-for="UrlPhoto" value="@(Model == null ? "/Logo.png" : Model.UrlPhoto)" type="hidden" />
                 </div>
-                <div class="mb-2">
+                <div class="mb-4">
                     <div class="d-flex justify-content-center">
                         <label for="fileUpload" class="btn btn-sm btn-outline-primary">
                             Choose Photo
                         </label>
                         <input id="fileUpload" asp-for="FilePhoto" type="file" class="btn btn-sm btn-outline-primary d-none" />
                     </div>
+                </div>
+                <div class="mb-2">
+                    <select asp-for="TamplateType" class="form-select">
+                        <option value="0" selected>Select a topic</option>
+                        <option value="1">Education</option>
+                        <option value="2">Quiz</option>
+                        <option value="3">Marketing</option>
+                        <option value="4">Events</option>
+                        <option value="5">Recruiting</option>
+                        <option value="6">Health</option>
+                        <option value="7">Research</option>
+                        <option value="8">Social</option>
+                        <option value="9">Other</option>
+                    </select>
+                    <span asp-validation-for="TamplateType" class="text-danger small"></span>
                 </div>
                 <div class="mb-2">
                     <label asp-for="Title" class="form-label"></label>
@@ -36,8 +51,7 @@
                         {
                             foreach (var q in Model.Questions)
                             {
-                                @await Html.PartialAsync("_GetQuestionPartialView", q)
-                                ;
+                                @await Html.PartialAsync("_GetQuestionPartialView", q);
                             }
                         }
                         <div id="partialContainer"></div>
@@ -75,6 +89,7 @@
         </div>
     </form>
 </div>
+
 <script src="~/js/CreateInputForController.js"></script>
 <script src="~/js/CreateQuestion.js"></script>
 <script src="~/js/CreateOptionsAnswer.js"></script>

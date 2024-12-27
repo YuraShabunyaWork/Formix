@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Formix.Enam;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Formix.Models.DB
@@ -13,6 +14,8 @@ namespace Formix.Models.DB
         [MaxLength(500)]
         public string Description { get; set; } = string.Empty;
         public string UrlPhoto { get; set; } = "/Logo.png";
+        [Required]
+        public TamplateType TamplateType { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public string AppUserId { get; set; }
         public AppUser? AppUser { get; set; }

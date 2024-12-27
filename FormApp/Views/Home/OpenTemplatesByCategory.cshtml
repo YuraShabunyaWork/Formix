@@ -1,0 +1,36 @@
+﻿@model List<HomeTamplates>;
+@{
+    ViewBag.Title = ViewData["Title"];
+}
+
+<div class="container-fluid w-100">
+    <div class="border-bottom border-top my-1 mx-0">
+        <p class="display-6">@ViewData["Title"]:</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto d-flex justify-content-start">
+        @foreach (var tamplate in Model)
+        {
+            <div class="col-12 col-md-6 mb-3">
+                <div class="card h-100 d-flex flex-column">
+                    <div class="card-header">
+                        <h6 class="card-title m-0">@tamplate.Title</h6>
+                    </div>
+                    <div class="card-body position-relative p-0">
+                        <img src="@tamplate.UrlPhoto" class="card-img rounded-0" />
+                        <p class="card-text small position-absolute bottom-0 start-0 w-100 text-white bg-dark bg-opacity-75 p-2 m-0">
+                            @tamplate.Description
+                        </p>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <form asp-controller="Answer" asp-action="OpenTamplate" method="get">
+                            <input type="hidden" name="idTamplate" value="@tamplate.TamplateId" class="form-control" />
+                            <button class="btn btn-primary" type="submit">Open</button>
+                        </form>
+                        <p class="text-muted m-2">@tamplate.CreatedAt</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

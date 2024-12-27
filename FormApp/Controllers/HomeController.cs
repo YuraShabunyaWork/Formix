@@ -1,13 +1,11 @@
+using Formix.Enam;
 using Formix.Models;
-using Formix.Models.DB;
 using Formix.Models.ViewModels.Home;
-using Formix.Models.ViewModels.Tamplate;
 using Formix.Services.Interfaces;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Diagnostics;
-using System.Security.Claims;
 
 namespace Formix.Controllers
 {
@@ -15,15 +13,12 @@ namespace Formix.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ITamplateRepository _tamplateRepository;
-        private readonly SignInManager<AppUser> _signInManager;
 
         public HomeController(ILogger<HomeController> logger, 
-            ITamplateRepository tamplateRepository,
-            SignInManager<AppUser> signInManager)
+            ITamplateRepository tamplateRepository)
         {
             _logger = logger;
             _tamplateRepository = tamplateRepository;
-            _signInManager = signInManager;
         }
 
         public async Task<IActionResult> Index()
@@ -69,6 +64,72 @@ namespace Formix.Controllers
             return View(startTamplates);
 
         }
+        [HttpGet]
+        public async Task<IActionResult> OpenTemplatesByCategory([FromQuery]TamplateType action)
+        {
+            var tamplates = await _tamplateRepository.GetTamplatesAsync();
+            IEnumerable<HomeTamplates> homeTamplates;
+            if (action == 0)
+            {
+                homeTamplates = tamplates.Select(t => new HomeTamplates
+                    {
+                        TamplateId = t.Id,
+                        Title = t.Title,
+                        Description = t.Description,
+                        UrlPhoto = t.UrlPhoto,
+                        CreatedAt = t.CreatedAt,
+                        Rating = t.RatingTamplate
+                    });
+                ViewData["Title"] = "All Templates";
+            }
+            else
+            {
+                homeTamplates = tamplates.Where(c => c.TamplateType == action)
+                    .Select(t => new HomeTamplates
+                    {
+                        TamplateId = t.Id,
+                        Title = t.Title,
+                        Description = t.Description,
+                        UrlPhoto = t.UrlPhoto,
+                        CreatedAt = t.CreatedAt,
+                        Rating = t.RatingTamplate
+                    });
+                ViewData["Title"] = action;
+            }
+            return View(homeTamplates.OrderByDescending(d => d.CreatedAt).ToList());
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Search([FromQuery]string search)
+        {
+            var tamplates = await _tamplateRepository.GetTamplatesAsync();
+            if (tamplates == null)
+            {
+                TempData["ToastMessage"] = "Tamplates are not found!";
+                return RedirectToAction("Index");
+            }
+            if (string.IsNullOrEmpty(search))
+            {
+                TempData["ToastMessage"] = "Enter search!";
+                return RedirectToAction("Index");
+            }
+            tamplates = tamplates
+                    .Where(t => t.Title!.ToLower().Contains(search.ToLower())
+                        || t.Description.ToLower().Contains(search.ToLower()))
+                    .ToList();
+            var homeTamplate = tamplates.Select(t => new HomeTamplates
+            {
+                TamplateId = t.Id,
+                Title = t.Title,
+                Description = t.Description,
+                UrlPhoto = t.UrlPhoto,
+                CreatedAt = t.CreatedAt,
+                Rating = t.RatingTamplate
+            }).ToList();
+            ViewData["Title"] = "Search";
+            return View(homeTamplate);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
