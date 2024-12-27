@@ -4,6 +4,6 @@ namespace Formix.Services.Interfaces
 {
     public interface IQuestionRepository
     {
-        Task<ICollection<Question>> GetQuestionsForTamplateAsync(int idForm);
+        Task<ICollection<Question>> GetQuestionsForTemplateAsync(int idForm);
     }
 }

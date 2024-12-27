@@ -12,7 +12,7 @@ namespace Formix.Models.DB
         public int Rating { get; set; }
         public string Comment { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public int TamplateId { get; set; }
-        public Tamplate Tamplate { get; set; }
+        public int TemplateId { get; set; }
+        public Template Template { get; set; }
     }
 }

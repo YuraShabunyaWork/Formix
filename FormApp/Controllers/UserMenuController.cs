@@ -3,7 +3,7 @@ using Formix.Models.DB;
 using Formix.Models.ViewModels.Account;
 using Formix.Models.ViewModels.Answer;
 using Formix.Models.ViewModels.Question;
-using Formix.Models.ViewModels.Tamplate;
+using Formix.Models.ViewModels.Template;
 using Formix.Models.ViewModels.UserMenu;
 using Formix.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
@@ -19,19 +19,19 @@ namespace Formix.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITamplateRepository _tamplateRepository;
+        private readonly ITemplateRepository _templateRepository;
         private readonly ICloudinaryService _cloudinaryService;
         private readonly GenerateEmail _generateEmail;
 
         public UserMenuController(UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            ITamplateRepository tamplateRepository,
+            ITemplateRepository templateRepository,
             ICloudinaryService cloudinaryService,
             GenerateEmail generateEmail)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _tamplateRepository = tamplateRepository;
+            _templateRepository = templateRepository;
             _cloudinaryService = cloudinaryService;
             _generateEmail = generateEmail;
         }
@@ -46,7 +46,7 @@ namespace Formix.Controllers
                 {
                     FirstName = appUser.FirstName,
                     LastName = appUser.LastName,
-                    Login = appUser.UserName,
+                    Login = appUser.UserName!,
                     Email = appUser.Email,
                     BirthDay = appUser.BirthDay,
                     PhoneNumber = appUser.PhoneNumber,
@@ -57,58 +57,60 @@ namespace Formix.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> OpenUserTamplates()
+        public async Task<IActionResult> OpenUserTemplates()
         {
-            List<Tamplate> tamplates;
-            if (User.IsInRole("admin"))
+            var userId = User.IsInRole("admin")
+                ? null
+                : (await _userManager.GetUserAsync(User))?.Id;
+
+            var templates = userId == null
+                ? await _templateRepository.GetTemplatesAsync()
+                : await _templateRepository.GetTemplatesForUserAsync(userId);
+
+            var templateView = new List<TemplateViewModel>();
+
+            foreach (var template in templates)
             {
-                tamplates = await _tamplateRepository.GetTamplatesAsync();
-            }
-            else 
-            { 
-                var appUser = await _userManager.GetUserAsync(User);
-                tamplates =  await _tamplateRepository.GetTamplatesForUserAsync(appUser.Id);
-            }
-            if (tamplates == null)
-            {
-                return View();
-            }
-            else
-            {
-                var tamplateView = tamplates.Select(t => new TamplateViewModel
+                var answers = new List<UsersAnsrewForTemplate>();
+                foreach (var answer in template.Answers)
                 {
-                    Id = t.Id,
-                    Title = t.Title,
-                    Description = t.Description,
-                    UrlPhoto = t.UrlPhoto,
-                    ListUsersAnsrews = t.Answers
-                    .Select(a => new UsersAnsrewForTamplate
+                    var user = await _userManager.FindByIdAsync(answer.AppUserId);
+                    answers.Add(new UsersAnsrewForTemplate
                     {
-                        Login = _userManager.FindByIdAsync(a.AppUserId).Result.UserName,
-                        Email = _userManager.FindByIdAsync(a.AppUserId).Result.Email,
-                        DateTime = a.DataAnswer
-                    })
-                    .OrderByDescending(d => d.DateTime)
-                    .ToList(),
-                    ListReviews = t.Reviews.Select(r => new ReviewViewModel
+                        Login = user!.UserName!,
+                        Email = user.Email!,
+                        DateTime = answer.DataAnswer
+                    });
+                }
+
+                templateView.Add(new TemplateViewModel
+                {
+                    Id = template.Id,
+                    Title = template.Title,
+                    Description = template.Description,
+                    UrlPhoto = template.UrlPhoto,
+                    ListUsersAnsrews = answers.OrderByDescending(a => a.DateTime).ToList(),
+                    ListReviews = template.Reviews.Select(r => new ReviewViewModel
                     {
                         UrlPhoto = r.UrlPhoto,
                         Login = r.Login,
                         Comment = r.Comment,
-                        Rating = r.Rating,
+                        Rating = r.Rating
                     }).ToList()
-                }).ToList();
-                return View(tamplateView);
+                });
             }
+
+            return View(templateView);
         }
+
         [HttpGet]
-        public async Task <IActionResult> OpenAnswerUser([FromQuery]int tamplateId, [FromQuery]string login)
+        public async Task <IActionResult> OpenAnswerUser([FromQuery]int templateId, [FromQuery]string login)
         {
-            var tamplate = await _tamplateRepository.GetTamplateAsync(tamplateId);
+            var template = await _templateRepository.GetTemplateAsync(templateId);
             var user = await _userManager.FindByNameAsync(login);
-            if (tamplate != null && user != null)
+            if (template != null && user != null)
             {
-                var answerList = tamplate.Answers.Where(a => a.AppUserId == user.Id)
+                var answerList = template.Answers.Where(a => a.AppUserId == user.Id)
                             .Select(a => a.AnswersUser).FirstOrDefault();
                 if (answerList != null)
                 {
@@ -116,10 +118,10 @@ namespace Formix.Controllers
                     {
                         Login = user.UserName,
                         Email = user.Email,
-                        Title = tamplate.Title,
-                        Description = tamplate.Description,
-                        UrlPhoto = tamplate.UrlPhoto,
-                        Questions = tamplate.Questions.Select(q => new QuestionViewModel
+                        Title = template.Title,
+                        Description = template.Description,
+                        UrlPhoto = template.UrlPhoto,
+                        Questions = template.Questions.Select(q => new QuestionViewModel
                         {
                             Title = q.Title,
                             TypeQuestion = q.TypeQuestion,
@@ -144,7 +146,7 @@ namespace Formix.Controllers
             {
                 FirstName = userApp.FirstName,
                 LastName = userApp.LastName,
-                Login = userApp.UserName,
+                Login = userApp.UserName!,
                 Email = userApp.Email,
                 BirthDay = userApp.BirthDay,
                 PhoneNumber = userApp.PhoneNumber,

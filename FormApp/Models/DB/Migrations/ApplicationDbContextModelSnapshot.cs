@@ -4,7 +4,6 @@ using Formix.Persistence.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,11 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Formix.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241219121244_AddReview")]
-    partial class AddReview
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,12 +37,12 @@ namespace Formix.Migrations
                     b.Property<DateTime>("DataAnswer")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TamplateId")
+                    b.Property<int>("TemplateId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TamplateId");
+                    b.HasIndex("TemplateId");
 
                     b.ToTable("Answers");
                 });
@@ -176,7 +173,7 @@ namespace Formix.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<int>("TamplateId")
+                    b.Property<int>("TemplateId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -189,7 +186,7 @@ namespace Formix.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TamplateId");
+                    b.HasIndex("TemplateId");
 
                     b.ToTable("Questions");
                 });
@@ -216,17 +213,21 @@ namespace Formix.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int>("TamplateId")
+                    b.Property<int>("TemplateId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UrlPhoto")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TamplateId");
+                    b.HasIndex("TemplateId");
 
-                    b.ToTable("Review");
+                    b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("Formix.Models.DB.Tamplate", b =>
+            modelBuilder.Entity("Formix.Models.DB.Template", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,6 +247,9 @@ namespace Formix.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("TemplateType")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -259,7 +263,7 @@ namespace Formix.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Tamplates");
+                    b.ToTable("Templates");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -397,13 +401,13 @@ namespace Formix.Migrations
 
             modelBuilder.Entity("Formix.Models.DB.Answer", b =>
                 {
-                    b.HasOne("Formix.Models.DB.Tamplate", "Tamplate")
+                    b.HasOne("Formix.Models.DB.Template", "Template")
                         .WithMany("Answers")
-                        .HasForeignKey("TamplateId")
+                        .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tamplate");
+                    b.Navigation("Template");
                 });
 
             modelBuilder.Entity("Formix.Models.DB.AnswersUser", b =>
@@ -419,30 +423,30 @@ namespace Formix.Migrations
 
             modelBuilder.Entity("Formix.Models.DB.Question", b =>
                 {
-                    b.HasOne("Formix.Models.DB.Tamplate", "Tamplate")
+                    b.HasOne("Formix.Models.DB.Template", "Template")
                         .WithMany("Questions")
-                        .HasForeignKey("TamplateId")
+                        .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tamplate");
+                    b.Navigation("Template");
                 });
 
             modelBuilder.Entity("Formix.Models.DB.Review", b =>
                 {
-                    b.HasOne("Formix.Models.DB.Tamplate", "Tamplate")
+                    b.HasOne("Formix.Models.DB.Template", "Template")
                         .WithMany("Reviews")
-                        .HasForeignKey("TamplateId")
+                        .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Tamplate");
+                    b.Navigation("Template");
                 });
 
-            modelBuilder.Entity("Formix.Models.DB.Tamplate", b =>
+            modelBuilder.Entity("Formix.Models.DB.Template", b =>
                 {
                     b.HasOne("Formix.Models.DB.AppUser", "AppUser")
-                        .WithMany("Tamplates")
+                        .WithMany("Templates")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -508,10 +512,10 @@ namespace Formix.Migrations
 
             modelBuilder.Entity("Formix.Models.DB.AppUser", b =>
                 {
-                    b.Navigation("Tamplates");
+                    b.Navigation("Templates");
                 });
 
-            modelBuilder.Entity("Formix.Models.DB.Tamplate", b =>
+            modelBuilder.Entity("Formix.Models.DB.Template", b =>
                 {
                     b.Navigation("Answers");
 

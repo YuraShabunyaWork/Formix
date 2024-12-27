@@ -32,7 +32,7 @@
                 {
                     <div class="d-flex w-100 justify-content-between align-items-center">
                         <div>
-                            <a asp-controller="Tamplate" asp-action="CreateTamplate" class="btn btn-warning btn-sm">Create Form</a>
+                            <a asp-controller="Template" asp-action="CreateTemplate" class="btn btn-warning btn-sm">Create Form</a>
                         </div>
                         <div class="w-50">
                             <form asp-action="Search" asp-controller="Home" method="get">
@@ -91,14 +91,14 @@
                         </div>
                         <div class="border-bottom border-1">
                             <a asp-controller="UserMenu" asp-action="Profile" class="btn w-100 btn-outline-secondary border-0 text-start">Your profile</a>
-                            <a asp-controller="UserMenu" asp-action="OpenUserTamplates" class="btn w-100 btn-outline-secondary border-0 text-start">All templates</a>
+                            <a asp-controller="UserMenu" asp-action="OpenUserTemplates" class="btn w-100 btn-outline-secondary border-0 text-start">All templates</a>
                         </div>
                     }
                     else
                     {
                         <div class="border-bottom border-1">
                             <a asp-controller="UserMenu" asp-action="Profile" class="btn w-100 btn-outline-secondary border-0 text-start">Your profile</a>
-                            <a asp-controller="UserMenu" asp-action="OpenUserTamplates" class="btn w-100 btn-outline-secondary border-0 text-start">Your templates</a>
+                            <a asp-controller="UserMenu" asp-action="OpenUserTemplates" class="btn w-100 btn-outline-secondary border-0 text-start">Your templates</a>
                         </div>
                     }
                     <div class="border-bottom border-1">

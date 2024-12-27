@@ -11,7 +11,7 @@ namespace Formix.Models.DB
         public string AppUserId { get; set; }
         public DateTime DataAnswer { get; set; } = DateTime.UtcNow;
         [Required]
-        public int TamplateId { get; set; }
-        public Tamplate Tamplate { get; set; }
+        public int TemplateId { get; set; }
+        public Template Template { get; set; }
     }
 }

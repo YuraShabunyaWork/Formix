@@ -1,7 +1,7 @@
-﻿@model TamplateViewModel
+﻿@model TemplateViewModel
 <div class="container mb-3">
     <p class="display-6 text-center">Edit Form</p>
-    <form asp-controller="Tamplate" asp-action="EditTamplate" method="post" enctype="multipart/form-data">
+    <form asp-controller="Template" asp-action="EditTemplate" method="post" enctype="multipart/form-data">
         <div class="row d-flex align-items-start">
             <input asp-for="Id" type="hidden" class="form-control" />
             <div class="col-12 col-md-4 d-md-block border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small m-2">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="mb-2">
-                    <select asp-for="TamplateType" class="form-select">
+                    <select asp-for="TemplateType" class="form-select">
                         <option value="0" selected>Select a topic</option>
                         <option value="1">Education</option>
                         <option value="2">Quiz</option>
@@ -33,7 +33,7 @@
                         <option value="8">Social</option>
                         <option value="9">Other</option>
                     </select>
-                    <span asp-validation-for="TamplateType" class="text-danger small"></span>
+                    <span asp-validation-for="TemplateType" class="text-danger small"></span>
                 </div>
                 <div class="mb-2">
                     <label asp-for="Title" class="form-label"></label>

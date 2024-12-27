@@ -14,9 +14,9 @@ namespace Formix.Services.Repository
             _db = db;
         }
 
-        public async Task<ICollection<Question>> GetQuestionsForTamplateAsync(int idForm)
+        public async Task<ICollection<Question>> GetQuestionsForTemplateAsync(int idForm)
         {
-            var questions = await _db.Questions.Where(q => q.TamplateId == idForm).ToListAsync();
+            var questions = await _db.Questions.Where(q => q.TemplateId == idForm).ToListAsync();
             return questions;
         }
     }

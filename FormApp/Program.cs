@@ -29,7 +29,7 @@ builder.Services.AddSingleton(provider =>
     return new Cloudinary(account);
 });
 
-builder.Services.AddScoped<ITamplateRepository, TamplateRepository>();
+builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerRepository, AnswerRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();

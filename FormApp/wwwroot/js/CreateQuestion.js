@@ -1,6 +1,6 @@
 ﻿$(document).on('click', '.addPartialBtn', function () {
     let value = $(this).val();
-    $.get('/Tamplate/GetQuestion', { questionType: value })
+    $.get('/Template/GetQuestion', { questionType: value })
         .done(function (data) {
             $('#partialContainer').append(data);
         });

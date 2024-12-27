@@ -12,100 +12,100 @@ namespace Formix.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ITamplateRepository _tamplateRepository;
+        private readonly ITemplateRepository _templateRepository;
 
         public HomeController(ILogger<HomeController> logger, 
-            ITamplateRepository tamplateRepository)
+            ITemplateRepository templateRepository)
         {
             _logger = logger;
-            _tamplateRepository = tamplateRepository;
+            _templateRepository = templateRepository;
         }
 
         public async Task<IActionResult> Index()
         {         
-            var tamplates = await _tamplateRepository.GetTamplatesAsync();
-            if (tamplates == null)
+            var templates = await _templateRepository.GetTemplatesAsync();
+            if (templates == null)
                 return View();
-            var topTamplates = new List<HomeTamplates>();
-            var lastTamplates = new List<HomeTamplates>();
+            var topTemplates = new List<HomeTemplates>();
+            var lastTemplates = new List<HomeTemplates>();
 
-            tamplates = tamplates.OrderByDescending(t => t.RatingTamplate).ToList();
-            for (int i = 0; i < 3 && i < tamplates.Count(); i++)
+            templates = templates.OrderByDescending(t => t.RatingTemplate).ToList();
+            for (int i = 0; i < 3 && i < templates.Count(); i++)
             {
-                topTamplates.Add(new HomeTamplates
+                topTemplates.Add(new HomeTemplates
                 {
-                    TamplateId = tamplates[i].Id,
-                    Title = tamplates[i].Title,
-                    Description = tamplates[i].Description,
-                    Rating = tamplates[i].RatingTamplate,
-                    UrlPhoto = tamplates[i].UrlPhoto
+                    TemplateId = templates[i].Id,
+                    Title = templates[i].Title,
+                    Description = templates[i].Description,
+                    Rating = templates[i].RatingTemplate,
+                    UrlPhoto = templates[i].UrlPhoto
                 });
             }
 
-            tamplates = tamplates.OrderByDescending(t => t.CreatedAt).ToList();
-            for (int i = 0; i < 6 && i < tamplates.Count(); i++)
+            templates = templates.OrderByDescending(t => t.CreatedAt).ToList();
+            for (int i = 0; i < 6 && i < templates.Count(); i++)
             {
-                lastTamplates.Add(new HomeTamplates
+                lastTemplates.Add(new HomeTemplates
                 {
-                    TamplateId = tamplates[i].Id,
-                    Title = tamplates[i].Title,
-                    Description = tamplates[i].Description,
-                    UrlPhoto = tamplates[i].UrlPhoto,
-                    CreatedAt = tamplates[i].CreatedAt
+                    TemplateId = templates[i].Id,
+                    Title = templates[i].Title,
+                    Description = templates[i].Description,
+                    UrlPhoto = templates[i].UrlPhoto,
+                    CreatedAt = templates[i].CreatedAt
                 });
             }
 
-            var startTamplates = new StartTampales
+            var startTemplates = new StartTempales
             {
-                TopTamplates = topTamplates,
-                LastTamplates = lastTamplates
+                TopTemplates = topTemplates,
+                LastTemplates = lastTemplates
             };
 
-            return View(startTamplates);
+            return View(startTemplates);
 
         }
         [HttpGet]
-        public async Task<IActionResult> OpenTemplatesByCategory([FromQuery]TamplateType action)
+        public async Task<IActionResult> OpenTemplatesByCategory([FromQuery]TemplateType action)
         {
-            var tamplates = await _tamplateRepository.GetTamplatesAsync();
-            IEnumerable<HomeTamplates> homeTamplates;
+            var templates = await _templateRepository.GetTemplatesAsync();
+            IEnumerable<HomeTemplates> homeTemplates;
             if (action == 0)
             {
-                homeTamplates = tamplates.Select(t => new HomeTamplates
+                homeTemplates = templates.Select(t => new HomeTemplates
                     {
-                        TamplateId = t.Id,
+                        TemplateId = t.Id,
                         Title = t.Title,
                         Description = t.Description,
                         UrlPhoto = t.UrlPhoto,
                         CreatedAt = t.CreatedAt,
-                        Rating = t.RatingTamplate
+                        Rating = t.RatingTemplate
                     });
                 ViewData["Title"] = "All Templates";
             }
             else
             {
-                homeTamplates = tamplates.Where(c => c.TamplateType == action)
-                    .Select(t => new HomeTamplates
+                homeTemplates = templates.Where(c => c.TemplateType == action)
+                    .Select(t => new HomeTemplates
                     {
-                        TamplateId = t.Id,
+                        TemplateId = t.Id,
                         Title = t.Title,
                         Description = t.Description,
                         UrlPhoto = t.UrlPhoto,
                         CreatedAt = t.CreatedAt,
-                        Rating = t.RatingTamplate
+                        Rating = t.RatingTemplate
                     });
                 ViewData["Title"] = action;
             }
-            return View(homeTamplates.OrderByDescending(d => d.CreatedAt).ToList());
+            return View(homeTemplates.OrderByDescending(d => d.CreatedAt).ToList());
         }
         [HttpGet]
         [Authorize]
         public async Task<IActionResult> Search([FromQuery]string search)
         {
-            var tamplates = await _tamplateRepository.GetTamplatesAsync();
-            if (tamplates == null)
+            var templates = await _templateRepository.GetTemplatesAsync();
+            if (templates == null)
             {
-                TempData["ToastMessage"] = "Tamplates are not found!";
+                TempData["ToastMessage"] = "Templates are not found!";
                 return RedirectToAction("Index");
             }
             if (string.IsNullOrEmpty(search))
@@ -113,21 +113,21 @@ namespace Formix.Controllers
                 TempData["ToastMessage"] = "Enter search!";
                 return RedirectToAction("Index");
             }
-            tamplates = tamplates
+            templates = templates
                     .Where(t => t.Title!.ToLower().Contains(search.ToLower())
                         || t.Description.ToLower().Contains(search.ToLower()))
                     .ToList();
-            var homeTamplate = tamplates.Select(t => new HomeTamplates
+            var homeTemplate = templates.Select(t => new HomeTemplates
             {
-                TamplateId = t.Id,
+                TemplateId = t.Id,
                 Title = t.Title,
                 Description = t.Description,
                 UrlPhoto = t.UrlPhoto,
                 CreatedAt = t.CreatedAt,
-                Rating = t.RatingTamplate
+                Rating = t.RatingTemplate
             }).ToList();
             ViewData["Title"] = "Search";
-            return View(homeTamplate);
+            return View(homeTemplate);
         }
 
 

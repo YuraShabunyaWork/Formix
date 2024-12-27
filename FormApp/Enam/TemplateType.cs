@@ -1,6 +1,6 @@
 ﻿namespace Formix.Enam
 {
-    public enum TamplateType
+    public enum TemplateType
     {
         Education = 1,
         Quiz,

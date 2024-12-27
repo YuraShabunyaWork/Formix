@@ -1,10 +1,10 @@
-﻿@model TamplateViewModel
-<div class="modal fade" id="@Model.Id-tamplate" tabindex="-1" aria-labelledby="tamplateModalLabel" aria-hidden="true">
+﻿@model TemplateViewModel
+<div class="modal fade" id="@Model.Id-template" tabindex="-1" aria-labelledby="templateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-between">
                 <div>
-                    <h1 class="modal-title fs-5" id="tamplateModalLabel">Answers</h1>
+                    <h1 class="modal-title fs-5" id="templateModalLabel">Answers</h1>
                 </div>
                 <div>
                     <input type="text" placeholder="Search" id="searchInput" class="form-control" />
@@ -32,7 +32,7 @@
                                 <td>@a.DateTime</td>
                                 <td>
                                     <form method="get" target="_blank">
-                                        <input type="hidden" name="tamplateId" value="@Model.Id"/>
+                                        <input type="hidden" name="templateId" value="@Model.Id"/>
                                         <input type="hidden" name="login" value="@a.Login"/>
                                         <button asp-action="OpenAnswerUser" asp-controller="UserMenu" type="submit" class="btn btn-outline-warning btn-sm text-black">
                                             Open

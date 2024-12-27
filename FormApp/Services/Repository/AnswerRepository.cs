@@ -14,9 +14,9 @@ namespace Formix.Services.Repository
             _db = db;
         }
 
-        public async Task<bool> AnswerForUserExistsAsync(string idUser, int idTamplate)
+        public async Task<bool> AnswerForUserExistsAsync(string idUser, int idTemplate)
         {
-            return await _db.Answers.AnyAsync(a => a.AppUserId == idUser && a.TamplateId == idTamplate);
+            return await _db.Answers.AnyAsync(a => a.AppUserId == idUser && a.TemplateId == idTemplate);
         }
 
         public async Task<bool> CreateAwswerAsync(Answer answer)
@@ -25,10 +25,10 @@ namespace Formix.Services.Repository
             return await SaveAsync();
         }
 
-        public async Task<bool> DeleteAwswerAsync(string idUser, int idTamplate)
+        public async Task<bool> DeleteAwswerAsync(string idUser, int idTemplate)
         {
             var answer = await _db.Answers
-                .Where(a => a.AppUserId == idUser && a.TamplateId == idTamplate)
+                .Where(a => a.AppUserId == idUser && a.TemplateId == idTemplate)
                 .FirstOrDefaultAsync();
             _db.Answers.Remove(answer);
             return await SaveAsync();

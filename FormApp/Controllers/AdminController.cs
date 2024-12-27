@@ -15,7 +15,7 @@ namespace Formix.Controllers
         private readonly UserManager<AppUser> _userManager;
 
         public AdminController(UserManager<AppUser> userManager,
-            ITamplateRepository tamplateRepository)
+            ITemplateRepository templateRepository)
         {
             _userManager = userManager;
         }

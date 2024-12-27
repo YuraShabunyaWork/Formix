@@ -18,8 +18,8 @@ namespace Formix.Models.DB
 
         [MaxLength(2000)]
         public string OptionsAnswer { get; set; } = string.Empty;
-        public int TamplateId { get; set; }
-        public Tamplate? Tamplate { get; set; }
+        public int TemplateId { get; set; }
+        public Template? Template { get; set; }
 
         [NotMapped]
         public List<string> OptionsAnswerList

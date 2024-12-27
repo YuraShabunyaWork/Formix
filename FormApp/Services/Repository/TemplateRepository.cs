@@ -5,46 +5,46 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Formix.Services.Repository
 {
-    public class TamplateRepository : ITamplateRepository
+    public class TemplateRepository : ITemplateRepository
     {
         private readonly ApplicationDbContext _db;
 
-        public TamplateRepository(ApplicationDbContext db)
+        public TemplateRepository(ApplicationDbContext db)
         {
             _db = db;
         }
-        public async Task<bool> CreareTamplateAsync(Tamplate tamplate)
+        public async Task<bool> CreareTemplateAsync(Template template)
         {
-            await _db.AddAsync(tamplate);
+            await _db.AddAsync(template);
             return await SaveAsync();
         }
 
-        public async Task<bool> DeleteTamplateAsync(Tamplate tamplate)
+        public async Task<bool> DeleteTemplateAsync(Template template)
         {
-            _db.Remove(tamplate);
+            _db.Remove(template);
             return await SaveAsync();
         }
 
-        public async Task<bool> TamplateExistsAsync(int id)
+        public async Task<bool> TemplateExistsAsync(int id)
         {
-            return await _db.Tamplates.AnyAsync(f => f.Id == id);
+            return await _db.Templates.AnyAsync(f => f.Id == id);
         }
 
-        public async Task<Tamplate> GetTamplateAsync(int id)
+        public async Task<Template> GetTemplateAsync(int id)
         {
-            var tamplate = await _db.Tamplates
+            var template = await _db.Templates
                 .Where(f => f.Id == id)
                 .Include(t => t.Questions)
                 .Include(t => t.Answers)
                 .ThenInclude(t => t.AnswersUser)
                 .Include(t => t.Reviews)
                 .FirstOrDefaultAsync();
-            return tamplate;
+            return template;
         }
 
-        public async Task<List<Tamplate>> GetTamplatesAsync()
+        public async Task<List<Template>> GetTemplatesAsync()
         {
-            return await _db.Tamplates
+            return await _db.Templates
                 .Include(t => t.Answers)
                 .Include(t => t.Reviews)
                 .ToListAsync();
@@ -55,20 +55,20 @@ namespace Formix.Services.Repository
             return await _db.SaveChangesAsync() > 0 ? true : false;
         }
 
-        public async Task<bool> UpdateTamplateAsync(Tamplate tamplate)
+        public async Task<bool> UpdateTemplateAsync(Template template)
         {
-            _db.Update(tamplate);
+            _db.Update(template);
             return await SaveAsync();
         }
 
-        public async Task<List<Tamplate>> GetTamplatesForUserAsync(string userId)
+        public async Task<List<Template>> GetTemplatesForUserAsync(string userId)
         {
-            var tamplates = await _db.Tamplates.Where(t => t.AppUserId == userId)
+            var templates = await _db.Templates.Where(t => t.AppUserId == userId)
                 .Include(t => t.Answers)
                 .Include(r => r.Reviews)
                 .ToListAsync();
 
-            return tamplates;
+            return templates;
         }
     }
 }

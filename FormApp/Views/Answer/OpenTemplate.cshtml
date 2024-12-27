@@ -1,9 +1,9 @@
-﻿@model TamplateViewModel
+﻿@model TemplateViewModel
 <div class="container mb-3">
     <div class="row d-flex align-items-start">
         <div class="col-12 col-md-4 border border-1 rounded-3 shadow bg-opacity-50 p-4 m-1 bg-body-secondary">
             <div>
-                <p class="form-label text-center mb-0">topic: <span class="fw-bold">@Model.TamplateType</span></p>
+                <p class="form-label text-center mb-0">topic: <span class="fw-bold">@Model.TemplateType</span></p>
             </div>
             <div class="d-flex justify-content-center mb-1">
                 @for (float j = Model.Rating; j > 0; j--)
@@ -34,9 +34,9 @@
             </div>
         </div>
         <div class="col-12 col-md border border-1 rounded-3 shadow bg-opacity-50 p-4 m-1 bg-body-secondary">
-            <form asp-controller="Answer" asp-action="SendAnswerTamplate" method="post">
+            <form asp-controller="Answer" asp-action="SendAnswerTemplate" method="post">
                 <div>
-                    <input type="hidden" name="answerView.TamplateId" value="@Model.Id" />
+                    <input type="hidden" name="answerView.TemplateId" value="@Model.Id" />
                     @for (int q = 0; q < Model.Questions.Count; q++)
                     {
                         <label class="form-label">@Model.Questions[q].Title</label>

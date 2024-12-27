@@ -162,21 +162,23 @@ namespace Formix.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tamplates",
+                name: "Templates",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    UrlPhoto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TemplateType = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tamplates", x => x.Id);
+                    table.PrimaryKey("PK_Templates", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tamplates_AspNetUsers_AppUserId",
+                        name: "FK_Templates_AspNetUsers_AppUserId",
                         column: x => x.AppUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -191,15 +193,15 @@ namespace Formix.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AppUserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DataAnswer = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TamplateId = table.Column<int>(type: "int", nullable: false)
+                    TemplateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Answers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Answers_Tamplates_TamplateId",
-                        column: x => x.TamplateId,
-                        principalTable: "Tamplates",
+                        name: "FK_Answers_Templates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "Templates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -213,15 +215,39 @@ namespace Formix.Migrations
                     Title = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     TypeQuestion = table.Column<int>(type: "int", nullable: false),
                     OptionsAnswer = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    TamplateId = table.Column<int>(type: "int", nullable: false)
+                    TemplateId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Questions_Tamplates_TamplateId",
-                        column: x => x.TamplateId,
-                        principalTable: "Tamplates",
+                        name: "FK_Questions_Templates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "Templates",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UrlPhoto = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TemplateId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Templates_TemplateId",
+                        column: x => x.TemplateId,
+                        principalTable: "Templates",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -248,9 +274,9 @@ namespace Formix.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Answers_TamplateId",
+                name: "IX_Answers_TemplateId",
                 table: "Answers",
-                column: "TamplateId");
+                column: "TemplateId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AnswersUsers_AnswerId",
@@ -304,13 +330,18 @@ namespace Formix.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_TamplateId",
+                name: "IX_Questions_TemplateId",
                 table: "Questions",
-                column: "TamplateId");
+                column: "TemplateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tamplates_AppUserId",
-                table: "Tamplates",
+                name: "IX_Reviews_TemplateId",
+                table: "Reviews",
+                column: "TemplateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Templates_AppUserId",
+                table: "Templates",
                 column: "AppUserId");
         }
 
@@ -339,13 +370,16 @@ namespace Formix.Migrations
                 name: "Questions");
 
             migrationBuilder.DropTable(
+                name: "Reviews");
+
+            migrationBuilder.DropTable(
                 name: "Answers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Tamplates");
+                name: "Templates");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

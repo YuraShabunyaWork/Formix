@@ -19,10 +19,10 @@ namespace Formix.Services.Repository
             return await SaveAsync();
         }
 
-        public async Task<bool> DeleteReviewUserForTamplate(string login, int tamplateId)
+        public async Task<bool> DeleteReviewUserForTemplate(string login, int templateId)
         {
             var reviews = await _dbContext.Reviews
-                .Where(r => r.Login == login && r.TamplateId == tamplateId)
+                .Where(r => r.Login == login && r.TemplateId == templateId)
                 .ToListAsync();
             _dbContext.RemoveRange(reviews);
             return await SaveAsync();

@@ -1,6 +1,6 @@
 ﻿namespace Formix.Models.ViewModels.Answer
 {
-    public class UsersAnsrewForTamplate
+    public class UsersAnsrewForTemplate
     {
         public string Login { get; set; }
         public string Email { get; set; }

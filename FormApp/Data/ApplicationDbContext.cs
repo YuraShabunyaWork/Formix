@@ -10,7 +10,7 @@ namespace Formix.Persistence.Data
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Tamplate> Tamplates { get; set; }
+        public DbSet<Template> Templates { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
         public DbSet<AnswersUser> AnswersUsers { get; set; }
@@ -20,20 +20,20 @@ namespace Formix.Persistence.Data
             builder.Entity<AppUser>()
                 .HasIndex(u => u.Email)
                 .IsUnique(true);             
-            builder.Entity<Tamplate>()
+            builder.Entity<Template>()
                 .HasMany(t => t.Questions)
-                .WithOne(q => q.Tamplate)
-                .HasForeignKey(t => t.TamplateId)
+                .WithOne(q => q.Template)
+                .HasForeignKey(t => t.TemplateId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Tamplate>()
+            builder.Entity<Template>()
                 .HasMany(t => t.Answers)
-                .WithOne(a => a.Tamplate)
-                .HasForeignKey(a => a.TamplateId)
+                .WithOne(a => a.Template)
+                .HasForeignKey(a => a.TemplateId)
                 .OnDelete(DeleteBehavior.Cascade);
-            builder.Entity<Tamplate>()
+            builder.Entity<Template>()
                 .HasMany(r => r.Reviews)
-                .WithOne(t => t.Tamplate)
-                .HasForeignKey(t => t.TamplateId)
+                .WithOne(t => t.Template)
+                .HasForeignKey(t => t.TemplateId)
                 .OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Answer>()
                 .HasMany(a => a.AnswersUser) 

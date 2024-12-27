@@ -1,4 +1,4 @@
-﻿@model StartTampales
+﻿@model StartTempales
 @{
     ViewBag.Title = "Index";
 }
@@ -11,22 +11,22 @@
     <!-- Carousel -->
     <div id="carouselAutoplaying" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-            @for (int i = 0; i < Model.TopTamplates.Count(); i++)
+            @for (int i = 0; i < Model.TopTemplates.Count(); i++)
             {
-                var tamplate = Model.TopTamplates.ElementAt(i);
-                <a asp-controller="Answer" asp-action="OpenTamplate" asp-route-idTamplate="@tamplate.TamplateId" class="d-block text-decoration-none">
+                var template = Model.TopTemplates.ElementAt(i);
+                <a asp-controller="Answer" asp-action="OpenTemplate" asp-route-idTemplate="@template.TemplateId" class="d-block text-decoration-none">
                     <div class="carousel-item @(i == 0 ? "active" : "")">
-                        <img src="@tamplate.UrlPhoto"
+                        <img src="@template.UrlPhoto"
                              class="d-block w-100 object-fit-cover"
                              style="max-height: 400px; filter: blur(5px); opacity: 0.75;"
-                             alt="@tamplate.Description">
+                             alt="@template.Description">
                         <div class="position-absolute mx-auto d-flex justify-content-start bg-white bg-opacity-50"
                              style="top:5vh; left:10vw">
                             <div>
-                                <label class="text-dark m-2">@tamplate.Rating</label>
+                                <label class="text-dark m-2">@template.Rating</label>
                             </div>
                             <div class="d-flex">
-                                @for (float j = tamplate.Rating; j > 0; j--)
+                                @for (float j = template.Rating; j > 0; j--)
                                 {
                                     <h4 class="m-1">
                                         @if (j >= 1)
@@ -42,8 +42,8 @@
                             </div>
                         </div>
                         <div class="carousel-caption d-md-block text-white">
-                            <h5>@tamplate.Title</h5>
-                            <p>@tamplate.Description</p>
+                            <h5>@template.Title</h5>
+                            <p>@template.Description</p>
                         </div>
                     </div>
                 </a>
@@ -65,25 +65,25 @@
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 mx-auto d-flex justify-content-start">
-        @foreach (var tamplate in Model.LastTamplates)
+        @foreach (var template in Model.LastTemplates)
         {
             <div class="col-12 col-md-4 mb-3">
                 <div class="card h-100 d-flex flex-column">
                     <div class="card-header">
-                        <h6 class="card-title m-0">@tamplate.Title</h6>
+                        <h6 class="card-title m-0">@template.Title</h6>
                     </div>
                     <div class="card-body position-relative p-0">
-                        <img src="@tamplate.UrlPhoto" class="card-img rounded-0" />
+                        <img src="@template.UrlPhoto" class="card-img rounded-0" />
                         <p class="card-text small position-absolute bottom-0 start-0 w-100 text-white bg-dark bg-opacity-75 p-2 m-0">
-                            @tamplate.Description
+                            @template.Description
                         </p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <form asp-controller="Answer" asp-action="OpenTamplate" method="get">
-                            <input type="hidden" name="idTamplate" value="@tamplate.TamplateId" class="form-control" />
+                        <form asp-controller="Answer" asp-action="OpenTemplate" method="get">
+                            <input type="hidden" name="idTemplate" value="@template.TemplateId" class="form-control" />
                             <button class="btn btn-primary" type="submit">Open</button>
                         </form>
-                        <p class="text-muted m-2">@tamplate.CreatedAt</p>
+                        <p class="text-muted m-2">@template.CreatedAt</p>
                     </div>
                 </div>
             </div>

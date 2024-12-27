@@ -1,7 +1,7 @@
 ﻿using Formix.Models.DB;
 using Formix.Models.ViewModels.Answer;
 using Formix.Models.ViewModels.Question;
-using Formix.Models.ViewModels.Tamplate;
+using Formix.Models.ViewModels.Template;
 using Formix.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,53 +12,53 @@ namespace Formix.Controllers
     public class AnswerController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly ITamplateRepository _tamplateRepository;
+        private readonly ITemplateRepository _templateRepository;
         private readonly IAnswerRepository _answerRepository;
         private readonly IReviewRepository _reviewRepository;
 
         public AnswerController(UserManager<AppUser> userManager,
-            ITamplateRepository tamplateRepository,
+            ITemplateRepository templateRepository,
             IAnswerRepository answerRepository,
             IReviewRepository reviewRepository)
         {
             _userManager = userManager;
-            _tamplateRepository = tamplateRepository;
+            _templateRepository = templateRepository;
             _answerRepository = answerRepository;
             _reviewRepository = reviewRepository;
         }
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> OpenTamplate([FromQuery] int idTamplate)
+        public async Task<IActionResult> OpenTemplate([FromQuery] int idTemplate)
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Singup", "Account");
             
-            if (await _answerRepository.AnswerForUserExistsAsync(userId, idTamplate))
+            if (await _answerRepository.AnswerForUserExistsAsync(userId, idTemplate))
             {
-                TempData["tamplateId"] = idTamplate;
+                TempData["templateId"] = idTemplate;
                 return View("ResetAnswer");
             }
 
-            if (await _tamplateRepository.TamplateExistsAsync(idTamplate))
+            if (await _templateRepository.TemplateExistsAsync(idTemplate))
             {
-                var tamplate = await _tamplateRepository.GetTamplateAsync(idTamplate);
-                var result = new TamplateViewModel
+                var template = await _templateRepository.GetTemplateAsync(idTemplate);
+                var result = new TemplateViewModel
                 {
-                    Title = tamplate.Title,
-                    Description = tamplate.Description,
-                    Id = idTamplate,
-                    UrlPhoto = tamplate.UrlPhoto,
-                    Rating = tamplate.RatingTamplate,
-                    TamplateType = tamplate.TamplateType,
-                    Questions = tamplate.Questions.Select(q => new QuestionViewModel
+                    Title = template.Title,
+                    Description = template.Description,
+                    Id = idTemplate,
+                    UrlPhoto = template.UrlPhoto,
+                    Rating = template.RatingTemplate,
+                    TemplateType = template.TemplateType,
+                    Questions = template.Questions.Select(q => new QuestionViewModel
                     {
                         Title = q.Title,
                         TypeQuestion = q.TypeQuestion,
                         OptionsAnswer = q.OptionsAnswerList
                     }).ToList(),
-                    ListReviews = tamplate.Reviews.Select(r => new ReviewViewModel
+                    ListReviews = template.Reviews.Select(r => new ReviewViewModel
                     {
                         Login = r.Login,
                         Rating = r.Rating,
@@ -74,22 +74,22 @@ namespace Formix.Controllers
         [Authorize]
         public async Task<IActionResult> ResetAnswer()
         {
-            var tamplateId = (int)TempData["tamplateId"]!;
+            var templateId = (int)TempData["templateId"]!;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
                 return RedirectToAction("Singup", "Account");
 
-            if(await _answerRepository.AnswerForUserExistsAsync(user.Id, tamplateId))
+            if(await _answerRepository.AnswerForUserExistsAsync(user.Id, templateId))
             {
-                await _answerRepository.DeleteAwswerAsync(user.Id, tamplateId);
-                await _reviewRepository.DeleteReviewUserForTamplate(user.UserName, tamplateId);
+                await _answerRepository.DeleteAwswerAsync(user.Id, templateId);
+                await _reviewRepository.DeleteReviewUserForTemplate(user.UserName, templateId);
             }
 
-            return RedirectToAction("OpenTamplate", "Answer", new { idTamplate = tamplateId });
+            return RedirectToAction("OpenTemplate", "Answer", new { idTemplate = templateId });
         }
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> SendAnswerTamplate([FromForm] AnswerViewModel answerView)
+        public async Task<IActionResult> SendAnswerTemplate([FromForm] AnswerViewModel answerView)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("", "");
@@ -104,7 +104,7 @@ namespace Formix.Controllers
 
             var answer = new Answer
             {
-                TamplateId = answerView.TamplateId,
+                TemplateId = answerView.TemplateId,
                 AppUserId = userId,
                 AnswersUser = answerView.Response
                     .Select((response, i) => new AnswersUser
@@ -118,7 +118,7 @@ namespace Formix.Controllers
             await _answerRepository.CreateAwswerAsync(answer);
             return View("Review", new ReviewViewModel
             {
-                TamplateId = answer.TamplateId
+                TemplateId = answer.TemplateId
             });
         }
         [HttpPost]
@@ -139,7 +139,7 @@ namespace Formix.Controllers
             var review = new Review
             {
                 Login = user.UserName,
-                TamplateId = reviewView.TamplateId,
+                TemplateId = reviewView.TemplateId,
                 Rating = reviewView.Rating,
                 Comment = reviewView.Comment??"",
                 UrlPhoto = user.UrlPhoto
