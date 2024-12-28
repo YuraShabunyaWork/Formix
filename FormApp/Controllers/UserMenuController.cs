@@ -116,9 +116,9 @@ namespace Formix.Controllers
                 {
                     var userAnswer = new UserAnswerViewModel
                     {
-                        Login = user.UserName,
-                        Email = user.Email,
-                        Title = template.Title,
+                        Login = user.UserName!,
+                        Email = user.Email!,
+                        Title = template.Title!,
                         Description = template.Description,
                         UrlPhoto = template.UrlPhoto,
                         Questions = template.Questions.Select(q => new QuestionViewModel
@@ -213,7 +213,7 @@ namespace Formix.Controllers
             }
             var settingView = new SettingsViewModel
             {
-                Email = userApp.Email,
+                Email = userApp.Email!,
                 UrlPhoto = userApp.UrlPhoto,
                 IsTwoFactor = userApp.TwoFactorEnabled
             };

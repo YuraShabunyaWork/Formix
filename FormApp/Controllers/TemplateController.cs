@@ -87,11 +87,11 @@ namespace Formix.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> DeleteTemplate([FromQuery] int idTempalte)
+        public async Task<IActionResult> DeleteTemplate([FromQuery] int idTemplate)
         {
-            if(await _templateRepository.TemplateExistsAsync(idTempalte))
+            if(await _templateRepository.TemplateExistsAsync(idTemplate))
             {
-                var template = await _templateRepository.GetTemplateAsync(idTempalte);
+                var template = await _templateRepository.GetTemplateAsync(idTemplate);
                 if(await _templateRepository.DeleteTemplateAsync(template))
                 {
                     await _cloudinaryService.DeletePhotoAsync(template.UrlPhoto);
@@ -141,7 +141,7 @@ namespace Formix.Controllers
             {
                 var template = await _templateRepository.GetTemplateAsync(templateView.Id);
                 template.Title = templateView.Title;
-                template.Description = templateView.Description;
+                template.Description = templateView.Description?? "";
                 template.TemplateType = templateView.TemplateType;
                 if (templateView.FilePhoto != null && templateView.FilePhoto.Length > 0)
                 {
@@ -160,6 +160,47 @@ namespace Formix.Controllers
             }
             TempData["ToastMessage"] = "The template has been updated successfully!";
             return RedirectToAction("OpenUserTemplates", "UserMenu");
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> SaveTemplate(int idTemplate)
+        {
+            var refererUrl = HttpContext.Request.Headers["Referer"].ToString();
+            var template = await _templateRepository.GetTemplateAsync(idTemplate);
+            if(template == null)
+            {
+                TempData["ToastMessage"] = "The template does not exist!";
+                return Redirect(refererUrl);
+            }
+            string userId = _userManager.GetUserId(User)!;
+            if (template!.AppUserId == userId)
+            {
+                TempData["ToastMessage"] = "You have such a template!";
+                return Redirect(refererUrl);
+            }
+            else
+            {
+                var newQuestions = template.Questions.Select(q => new Question
+                {
+                    Title = q.Title,
+                    TypeQuestion = q.TypeQuestion,
+                    OptionsAnswer = q.OptionsAnswer,
+                }).ToList();
+                var newTeplate = new Template
+                {
+                    Title = template.Title,
+                    Description = template.Description,
+                    TemplateType = template.TemplateType,
+                    UrlPhoto = template.UrlPhoto,
+                    Questions = newQuestions,
+                    AppUserId = userId,                   
+                };
+                if (await _templateRepository.CreareTemplateAsync(newTeplate))
+                    TempData["ToastMessage"] = "The template was successfully saved!";
+                else
+                    TempData["ToastMessage"] = "Something's wrong";
+                return Redirect(refererUrl);
+            }
         }
     }
 }

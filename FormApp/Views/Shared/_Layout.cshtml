@@ -13,7 +13,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header style="height:10vh">
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle border-bottom box-shadow fixed-top ps-0 pe-2 mb-1">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary-subtle border-bottom box-shadow fixed-top p-1 pe-2 mb-1">
             <div class="d-flex justify-content-between align-items-center w-100">
                 <div class="d-flex align-items-center">
                     <button type="button"
@@ -31,34 +31,67 @@
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
                 {
                     <div class="d-flex w-100 justify-content-between align-items-center">
-                        <div>
+                        <div class="d-none d-md-block">
                             <a asp-controller="Template" asp-action="CreateTemplate" class="btn btn-warning btn-sm">Create Form</a>
                         </div>
                         <div class="w-50">
                             <form asp-action="Search" asp-controller="Home" method="get">
-                                <div class="input-group rounded w-50">
-                                        <input class="form-control border-0 rounded-end-0" 
-                                           placeholder="Search"
-                                           name="search" />
+                                <div class="input-group rounded" style="width:40vw; max-width:300px">
+                                    <input class="form-control border-0 rounded-end-0" 
+                                        placeholder="Search"
+                                        name="search" />
                                     <button type="submit" class="btn btn-light">
                                         <i class="bi bi-search"></i>
                                     </button>
                                 </div>
                             </form>
                         </div>
-                        <div>
+                        <div class="btn-group dropstart">
                             @if (User.IsInRole("admin"))
                             {
                                 <label class="text-muted m-2">(admin)</label>
                             }
                             <button class="btn btn-light border-2 rounded-pill text-black p-0"
                                     type="button"
-                                    data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasRight"
-                                    aria-controls="offcanvasRight"
+                                    data-bs-toggle="dropdown" 
+                                    aria-expanded="false"
                                     style="height:7vh;">
                                 <img class="h-100 rounded-pill" src="@(User.Claims.FirstOrDefault(c => c.Type == "ProfilePhotoUrl")?.Value ?? "/AvaDef.png")">
-                            </button>
+                            </button>                      
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <ul class="dropdown-menu">
+                                    <li class="border-bottom border-1 text-center">
+                                        <label class="my-1">@User.Identity.Name</label>
+                                    </li>
+                                    <li class="border-bottom border-1 text-center">
+                                        <a asp-controller="Template" asp-action="CreateTemplate" class="w-75 btn btn-warning btn-sm my-1">Create Form</a>
+                                    </li>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <li class="border-bottom border-1">
+                                            <a asp-controller="Admin" asp-action="RunUsers" class="w-100 btn btn-outline-secondary border-0 text-start">Run users</a>
+                                        </li>
+                                        <li class="border-bottom border-1">
+                                            <a asp-controller="UserMenu" asp-action="Profile" class="btn w-100 btn-outline-secondary border-0 text-start">Your profile</a>
+                                            <a asp-controller="UserMenu" asp-action="OpenUserTemplates" class="btn w-100 btn-outline-secondary border-0 text-start">All templates</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="border-bottom border-1">
+                                            <a asp-controller="UserMenu" asp-action="Profile" class="btn w-100 btn-outline-secondary border-0 text-start">Your profile</a>
+                                            <a asp-controller="UserMenu" asp-action="OpenUserTemplates" class="btn w-100 btn-outline-secondary border-0 text-start">Your templates</a>
+                                        </li>
+                                    }
+                                    <li class="border-bottom border-1">
+                                        <a asp-controller="UserMenu" asp-action="Settings" class="btn w-100 btn-outline-secondary border-0 text-start">Settings</a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="Account" asp-action="Logout" class="btn w-100 btn-outline-secondary border-0 text-start">Log Out</a>
+                                    </li>
+                                </ul>
+                            }
                         </div>
                     </div>
                 }
@@ -75,40 +108,7 @@
                 }
             </div>
         </nav>
-
-        @if (User.Identity != null && User.Identity.IsAuthenticated)
-        {
-            <div class="offcanvas offcanvas-end" style="min-width:20vw; max-width: 30vw;" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasRightLabel">@User.Identity.Name</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                    @if (User.IsInRole("admin"))
-                    {
-                        <div class="border-bottom border-1">
-                            <a asp-controller="Admin" asp-action="RunUsers" class="w-100 btn btn-outline-secondary border-0 text-start">Run users</a>
-                        </div>
-                        <div class="border-bottom border-1">
-                            <a asp-controller="UserMenu" asp-action="Profile" class="btn w-100 btn-outline-secondary border-0 text-start">Your profile</a>
-                            <a asp-controller="UserMenu" asp-action="OpenUserTemplates" class="btn w-100 btn-outline-secondary border-0 text-start">All templates</a>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="border-bottom border-1">
-                            <a asp-controller="UserMenu" asp-action="Profile" class="btn w-100 btn-outline-secondary border-0 text-start">Your profile</a>
-                            <a asp-controller="UserMenu" asp-action="OpenUserTemplates" class="btn w-100 btn-outline-secondary border-0 text-start">Your templates</a>
-                        </div>
-                    }
-                    <div class="border-bottom border-1">
-                        <a asp-controller="UserMenu" asp-action="Settings" class="btn w-100 btn-outline-secondary border-0 text-start">Settings</a>
-                    </div>
-                    <a asp-controller="Account" asp-action="Logout" class="btn w-100 btn-outline-secondary border-0 text-start">Log Out</a>
-                </div>
-            </div>
-        }
-        <div class="offcanvas offcanvas-start" style="min-width:20vw; max-width: 30vw;" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
+        <div class="offcanvas offcanvas-start" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
             <div class="offcanvas-header p-0 ms-1 mb-0" style="height:10vh">
                 <div class="d-flex align-items-center">
                     <button type="button" class="btn px-2 py-0 rounded-pill" data-bs-dismiss="offcanvas" aria-label="Close">

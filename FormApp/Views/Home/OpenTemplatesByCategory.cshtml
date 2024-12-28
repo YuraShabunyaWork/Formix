@@ -11,10 +11,11 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 mx-auto d-flex justify-content-start">
         @foreach (var template in Model)
         {
-            <div class="col-12 col-md-6 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="card h-100 d-flex flex-column">
                     <div class="card-header">
                         <h6 class="card-title m-0">@template.Title</h6>
+                        <p class="text-muted m-2 small">@template.CreatedAt.ToLocalTime()</p>
                     </div>
                     <div class="card-body position-relative p-0">
                         <img src="@template.UrlPhoto" class="card-img rounded-0" />
@@ -23,11 +24,15 @@
                         </p>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
-                        <form asp-controller="Answer" asp-action="OpenTemplate" method="get">
+                        <form>
                             <input type="hidden" name="idTemplate" value="@template.TemplateId" class="form-control" />
-                            <button class="btn btn-primary" type="submit">Open</button>
+                            <div class="btn-group">
+                                <button formmethod="get" asp-controller="Answer" asp-action="OpenTemplate" class="btn btn-primary" type="submit">Open</button>
+                                <button formmethod="post" asp-controller="Template" asp-action="SaveTemplate" class="btn btn-outline-primary" type="submit">
+                                    <i class="bi bi-floppy"></i> Save
+                                </button>
+                            </div>
                         </form>
-                        <p class="text-muted m-2">@template.CreatedAt</p>
                     </div>
                 </div>
             </div>
