@@ -25,7 +25,7 @@
                     </button>
                     <a class="navbar-brand p-0" asp-controller="Home" asp-action="Index">
                         <img src="~/logo.png" class="rounded-pill" style="height:6vh;" />
-                        FormiX
+                        <label class="d-none d-md-inline-block">FormiX</label>
                     </a>
                 </div>
                 @if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -35,11 +35,12 @@
                             <a asp-controller="Template" asp-action="CreateTemplate" class="btn btn-warning btn-sm">Create Form</a>
                         </div>
                         <div class="w-50">
-                            <form asp-action="Search" asp-controller="Home" method="get">
-                                <div class="input-group rounded" style="width:40vw; max-width:300px">
+                            <form asp-action="OpenTemplatesByType" asp-controller="Home" method="get">
+                                <div class="input-group rounded" style="width:50vw; max-width:300px">
                                     <input class="form-control border-0 rounded-end-0" 
                                         placeholder="Search"
-                                        name="search" />
+                                        name="search"
+                                        value="@ViewData["Search"]" />
                                     <button type="submit" class="btn btn-light">
                                         <i class="bi bi-search"></i>
                                     </button>
@@ -47,10 +48,6 @@
                             </form>
                         </div>
                         <div class="btn-group dropstart">
-                            @if (User.IsInRole("admin"))
-                            {
-                                <label class="text-muted m-2">(admin)</label>
-                            }
                             <button class="btn btn-light border-2 rounded-pill text-black p-0"
                                     type="button"
                                     data-bs-toggle="dropdown" 
@@ -62,7 +59,11 @@
                             {
                                 <ul class="dropdown-menu">
                                     <li class="border-bottom border-1 text-center">
-                                        <label class="my-1">@User.Identity.Name</label>
+                                        @if (User.IsInRole("admin"))
+                                        {
+                                            <label class="text-muted">(admin)</label>
+                                        }
+                                        <label>@User.Identity.Name</label>
                                     </li>
                                     <li class="border-bottom border-1 text-center">
                                         <a asp-controller="Template" asp-action="CreateTemplate" class="w-75 btn btn-warning btn-sm my-1">Create Form</a>
@@ -117,25 +118,14 @@
                     <h5 class="offcanvas-title" id="offcanvasRightLabel">Menu</h5>
                 </div>
             </div>
-            <form asp-action="OpenTemplatesByCategory" asp-controller="Home" method="get">
-                <div class="offcanvas-body py-0">
-                    <div class="border-bottom">
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="0">All Templates</button>
-                    </div>
-                    <p class="text-muted small m-0">category:</p>
-                    <div>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="1">Education</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="2">Quiz</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="3">Marketing</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="4">Events</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="5">Recruiting</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="6">Health</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="7">Research</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="8">Social</button>
-                        <button type="submit" class="btn w-100 btn-outline-secondary border-0 text-start" name="action" value="9">Other</button>
-                    </div>                
+            <div class="offcanvas-body py-0">
+                <div class="border-bottom">
+                    <a asp-controller="" asp-action="" class="btn w-100 btn-outline-secondary border-0 text-start">Main page</a>
                 </div>
-            </form>
+                <div class="border-bottom">
+                    <a asp-action="OpenTemplatesByType" asp-controller="Home" class="btn w-100 btn-outline-secondary border-0 text-start">All Templates</a>
+                </div>          
+            </div>
         </div>
     </header>
 

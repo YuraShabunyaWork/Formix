@@ -65,11 +65,18 @@ namespace Formix.Controllers
 
         }
         [HttpGet]
-        public async Task<IActionResult> OpenTemplatesByCategory([FromQuery]TemplateType action)
+        public async Task<IActionResult> OpenTemplatesByType([FromQuery]TemplateType category = 0, 
+            [FromQuery]string sort = "new", 
+            [FromQuery]string search = "")
         {
             var templates = await _templateRepository.GetTemplatesAsync();
+            if (templates == null)
+            {
+                TempData["ToastMessage"] = "Templates are not found!";
+                return RedirectToAction("Index");
+            }
             IEnumerable<HomeTemplates> homeTemplates;
-            if (action == 0)
+            if (category == 0)
             {
                 homeTemplates = templates.Select(t => new HomeTemplates
                     {
@@ -84,7 +91,7 @@ namespace Formix.Controllers
             }
             else
             {
-                homeTemplates = templates.Where(c => c.TemplateType == action)
+                homeTemplates = templates.Where(c => c.TemplateType == category)
                     .Select(t => new HomeTemplates
                     {
                         TemplateId = t.Id,
@@ -94,43 +101,23 @@ namespace Formix.Controllers
                         CreatedAt = t.CreatedAt,
                         Rating = t.RatingTemplate
                     });
-                ViewData["Title"] = action;
+                ViewData["Title"] = category;
             }
-            return View(homeTemplates.OrderByDescending(d => d.CreatedAt).ToList());
-        }
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Search([FromQuery]string search)
-        {
-            var templates = await _templateRepository.GetTemplatesAsync();
-            if (templates == null)
+            if(sort == "new")
+            {                
+                homeTemplates = homeTemplates.OrderByDescending(c => c.CreatedAt);
+            }
+            if(sort == "popular")
             {
-                TempData["ToastMessage"] = "Templates are not found!";
-                return RedirectToAction("Index");
+                homeTemplates = homeTemplates.OrderByDescending(p => p.Rating);
             }
-            if (string.IsNullOrEmpty(search))
-            {
-                TempData["ToastMessage"] = "Enter search!";
-                return RedirectToAction("Index");
-            }
-            templates = templates
+            ViewData["Sort"] = sort;
+            homeTemplates = homeTemplates
                     .Where(t => t.Title!.ToLower().Contains(search.ToLower())
-                        || t.Description.ToLower().Contains(search.ToLower()))
-                    .ToList();
-            var homeTemplate = templates.Select(t => new HomeTemplates
-            {
-                TemplateId = t.Id,
-                Title = t.Title,
-                Description = t.Description,
-                UrlPhoto = t.UrlPhoto,
-                CreatedAt = t.CreatedAt,
-                Rating = t.RatingTemplate
-            }).ToList();
-            ViewData["Title"] = "Search";
-            return View(homeTemplate);
+                        || t.Description!.ToLower().Contains(search.ToLower()));
+            ViewData["Search"] = search;
+            return View(homeTemplates.ToList());
         }
-
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
