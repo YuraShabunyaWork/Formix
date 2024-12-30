@@ -19,7 +19,14 @@ namespace Formix.Services.Repository
             return await SaveAsync();
         }
 
-        public async Task<bool> DeleteReviewUserForTemplate(string login, int templateId)
+        public async Task<bool> DeleteAllReviewsForUserAsync(string login)
+        {
+            var reviews = _dbContext.Reviews.Where(u => u.Login == login);
+            _dbContext.Reviews.RemoveRange(reviews);
+            return await SaveAsync();
+        }
+
+        public async Task<bool> DeleteReviewUserForTemplateAsync(string login, int templateId)
         {
             var reviews = await _dbContext.Reviews
                 .Where(r => r.Login == login && r.TemplateId == templateId)

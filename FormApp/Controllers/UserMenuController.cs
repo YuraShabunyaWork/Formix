@@ -75,12 +75,15 @@ namespace Formix.Controllers
                 foreach (var answer in template.Answers)
                 {
                     var user = await _userManager.FindByIdAsync(answer.AppUserId);
-                    answers.Add(new UsersAnsrewForTemplate
+                    if (user != null)
                     {
-                        Login = user!.UserName!,
-                        Email = user.Email!,
-                        DateTime = answer.DataAnswer
-                    });
+                        answers.Add(new UsersAnsrewForTemplate
+                        {
+                            Login = user!.UserName!,
+                            Email = user.Email!,
+                            DateTime = answer.DataAnswer
+                        });
+                    }
                 }
 
                 templateView.Add(new TemplateViewModel
@@ -161,10 +164,6 @@ namespace Formix.Controllers
             {
                 return View(profileView);
             }
-            if (profileView.FilePhoto != null && profileView.FilePhoto.Length > 0)
-            {
-                profileView.UrlPhoto = await _cloudinaryService.UploadPhotoAsync(profileView.FilePhoto);
-            }
             var userApp = await _userManager.GetUserAsync(User);
             if (userApp == null)
             {
@@ -173,7 +172,7 @@ namespace Formix.Controllers
 
             userApp.FirstName = profileView.FirstName;
             userApp.LastName = profileView.LastName;
-            if (await _userManager.FindByNameAsync(profileView.Login) != null)
+            if (await _userManager.FindByNameAsync(profileView.Login) == null)
             {
                 userApp.UserName = profileView.Login;
             }
@@ -184,6 +183,10 @@ namespace Formix.Controllers
             }
             userApp.BirthDay = profileView.BirthDay;
             userApp.PhoneNumber = profileView.PhoneNumber;
+            if (profileView.FilePhoto != null && profileView.FilePhoto.Length > 0)
+            {
+                profileView.UrlPhoto = await _cloudinaryService.UploadPhotoAsync(profileView.FilePhoto);
+            }
             userApp.UrlPhoto = profileView.UrlPhoto;
             var result = await _userManager.UpdateAsync(userApp);
             if (result.Succeeded)

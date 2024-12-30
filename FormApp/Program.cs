@@ -5,6 +5,8 @@ using Formix.Persistence.Data;
 using Formix.Services;
 using Formix.Services.Interfaces;
 using Formix.Services.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,8 +62,15 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Singin";
+    options.LogoutPath = "/Account/Logout";
 });
 
+builder.Services.AddAuthentication().AddGoogle(options =>
+{
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.CallbackPath = new PathString("/Account/ExternalLoginCallback/");
+});
 
 var app = builder.Build();
 await InitializeRolesAndAdminAsync(app.Services);

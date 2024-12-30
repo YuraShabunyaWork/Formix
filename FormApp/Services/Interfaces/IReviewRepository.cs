@@ -6,6 +6,7 @@ namespace Formix.Services.Interfaces
     {
         Task<bool> SaveAsync();
         Task<bool> CreateReviewAsync(Review review);
-        Task<bool> DeleteReviewUserForTemplate(string login, int teplateId);
+        Task<bool> DeleteReviewUserForTemplateAsync(string login, int teplateId);
+        Task<bool> DeleteAllReviewsForUserAsync(string login);
     }
 }

@@ -2,8 +2,12 @@
 using Formix.Models.DB;
 using Formix.Models.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Net;
 using System.Security.Claims;
 
@@ -107,7 +111,52 @@ namespace Formix.Controllers
 
             return View(model);
         }
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnurl = null)
+        {
+            var redirecturl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnurl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirecturl);
+            return Challenge(properties, provider);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ExternalLoginCallback(string returnurl = null, string remoteError = null)
+        {
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                return View(nameof(Login));
+            }
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Singin));
+            }
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email!);
+            if(user == null)
+            {
+                user = new AppUser
+                {
+                    UserName = email!.Split('@')[0],
+                    Email = email
+                };
+                var createResult = await _userManager.CreateAsync(user);
+                if (!createResult.Succeeded)
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to create user.");
+                    return RedirectToAction("Singin");
+                }
+            }
+            var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
+            var claimsIdentity = userPrincipal.Identity as ClaimsIdentity;
+            claimsIdentity?.AddClaim(new Claim("ProfilePhotoUrl", user.UrlPhoto ?? "/AvaDef.png"));
 
+            await _signInManager.Context.SignInAsync(
+                IdentityConstants.ApplicationScheme,
+                userPrincipal);
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpGet]
         public async Task<IActionResult> Logout()

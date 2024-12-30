@@ -1,6 +1,7 @@
 ﻿using Formix.Models.DB;
 using Formix.Models.ViewModels.Admin;
 using Formix.Services.Interfaces;
+using Formix.Services.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,14 @@ namespace Formix.Controllers
     public class AdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IReviewRepository _reviewRepository;
 
         public AdminController(UserManager<AppUser> userManager,
-            ITemplateRepository templateRepository)
+            ITemplateRepository templateRepository,
+            IReviewRepository reviewRepository)
         {
             _userManager = userManager;
+            _reviewRepository = reviewRepository;
         }
         [HttpGet]
         public async Task<IActionResult> RunUsers()
@@ -70,6 +74,7 @@ namespace Formix.Controllers
                             await _userManager.RemoveFromRoleAsync(user, "admin");
                             break;
                         case "delete":
+                            await _reviewRepository.DeleteAllReviewsForUserAsync(user.UserName!);
                             await _userManager.DeleteAsync(user);
                             break;
                     }

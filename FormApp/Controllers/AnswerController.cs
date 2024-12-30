@@ -82,7 +82,7 @@ namespace Formix.Controllers
             if(await _answerRepository.AnswerForUserExistsAsync(user.Id, templateId))
             {
                 await _answerRepository.DeleteAwswerAsync(user.Id, templateId);
-                await _reviewRepository.DeleteReviewUserForTemplate(user.UserName, templateId);
+                await _reviewRepository.DeleteReviewUserForTemplateAsync(user.UserName, templateId);
             }
 
             return RedirectToAction("OpenTemplate", "Answer", new { idTemplate = templateId });
