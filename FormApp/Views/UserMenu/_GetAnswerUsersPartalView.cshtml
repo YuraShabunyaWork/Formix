@@ -4,10 +4,10 @@
         <div class="modal-content">
             <div class="modal-header d-flex justify-content-between">
                 <div>
-                    <h1 class="modal-title fs-5" id="templateModalLabel">Answers</h1>
+                    <h1 class="modal-title fs-5" id="templateModalLabel">@Localizer["Answers"]</h1>
                 </div>
                 <div>
-                    <input type="text" placeholder="Search" id="searchInput" class="form-control" />
+                    <input type="text" placeholder="@Localizer["Search"]" id="searchInput" class="form-control" />
                 </div>
                 <div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -17,9 +17,9 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Login</th>
+                            <th>@Localizer["Login"]</th>
                             <th>Email</th>
-                            <th>Data</th>
+                            <th>@Localizer["Data"]</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -35,7 +35,7 @@
                                         <input type="hidden" name="templateId" value="@Model.Id"/>
                                         <input type="hidden" name="login" value="@a.Login"/>
                                         <button asp-action="OpenAnswerUser" asp-controller="UserMenu" type="submit" class="btn btn-outline-warning btn-sm text-black">
-                                            Open
+                                            @Localizer["Open"]
                                         </button>
                                     </form>
                                 </td>
@@ -45,7 +45,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Close"]</button>
             </div>
         </div>
     </div>

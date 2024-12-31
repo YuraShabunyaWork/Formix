@@ -7,10 +7,10 @@
         <div class="p-3">
             <form method="get">
                 <input type="hidden" name="search" value="@ViewData["Search"]" />
-                <h5 class="text-center">Menu</h5>
+                <h5 class="text-center">@Localizer["Menu"]</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item mb-2">
-                        <label class="text-muted mb-1">Category:</label>
+                        <label class="text-muted mb-1">@Localizer["Category"]:</label>
                         <select name="category" class="form-select">
                             <option value="0">All Templates</option>
                             @foreach (TemplateType category in Enum.GetValues(typeof(TemplateType)))
@@ -27,7 +27,7 @@
                         </select>
                     </li>
                     <li class="nav-item mb-2">
-                        <label class="text-muted mb-1">Sorting:</label>
+                        <label class="text-muted mb-1">@Localizer["Sorting"]:</label>
                         <select name="sort" class="form-select">
                             @if(ViewData["Sort"]?.ToString() == "popular")
                             {
@@ -43,7 +43,7 @@
                     </li>
                     <li class="nav-item text-center">
                         <button class="btn btn-outline-primary">
-                            Find
+                            @Localizer["Find"]
                         </button>
                     </li>
                 </ul>
@@ -52,12 +52,12 @@
     </nav>
     <nav class="d-md-none">
         <button class="btn btn-primary m-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
-            Open Menu
+            @Localizer["Menu"]
         </button>
 
         <div class="offcanvas offcanvas-start bg-light" tabindex="-1" id="mobileMenu" aria-labelledby="mobileMenuLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="mobileMenuLabel">Menu</h5>
+                <h5 class="offcanvas-title" id="mobileMenuLabel">@Localizer["Menu"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
@@ -65,7 +65,7 @@
                     <input type="hidden" name="search" value="@ViewData["Search"]" />
                     <ul class="nav flex-column">
                         <li class="nav-item mb-2">
-                            <label class="text-muted mb-1">Category:</label>
+                            <label class="text-muted mb-1">@Localizer["Category"]</label>
                             <select name="category" class="form-select">
                                 <option value="0">All Templates</option>
                                 @foreach (TemplateType category in Enum.GetValues(typeof(TemplateType)))
@@ -82,7 +82,7 @@
                             </select>
                         </li>
                         <li class="nav-item mb-2">
-                            <label class="text-muted mb-1">Sorting:</label>
+                            <label class="text-muted mb-1">@Localizer["Sorting"]:</label>
                             <select name="sort" class="form-select">
                                 @if (ViewData["Sort"]?.ToString() == "popular")
                                 {
@@ -97,7 +97,7 @@
                             </select>
                         </li>
                         <li class="nav-item text-center">
-                            <button class="btn btn-outline-primary">Find</button>
+                            <button class="btn btn-outline-primary">@Localizer["Find"]</button>
                         </li>
                     </ul>
                 </form>
@@ -142,9 +142,9 @@
                             <form>
                                 <input type="hidden" name="idTemplate" value="@template.TemplateId" class="form-control" />
                                 <div class="btn-group">
-                                    <button formmethod="get" asp-controller="Answer" asp-action="OpenTemplate" class="btn btn-primary" type="submit">Open</button>
+                                    <button formmethod="get" asp-controller="Answer" asp-action="OpenTemplate" class="btn btn-primary" type="submit">@Localizer["Open"]</button>
                                     <button formmethod="post" asp-controller="Template" asp-action="SaveTemplate" class="btn btn-outline-primary" type="submit">
-                                        <i class="bi bi-floppy"></i> Save
+                                        <i class="bi bi-floppy"></i> @Localizer["Save"]
                                     </button>
                                 </div>
                             </form>

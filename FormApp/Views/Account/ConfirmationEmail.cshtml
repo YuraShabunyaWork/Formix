@@ -7,7 +7,7 @@
         <a asp-action="" asp-controller="">
             <img src="~/Logo.jpg" class="rounded-pill mb-2" style="height:15vh" />
         </a>
-        <p class="display-6">Sign in to <span class="fw-bolder">Formix</span></p>
+        <p class="display-6">@Localizer["SignInTo"] <span class="fw-bolder">Formix</span></p>
     </div>
     <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
         <form asp-controller="Account" asp-action="ConfirmationEmail" method="post">
@@ -16,7 +16,7 @@
             <input type="hidden" asp-for="Password" />
             <input type="hidden" asp-for="RememberMe" />
             <div class="mb-2">
-                <h3 class="text-center mb-4">Enter verification code</h3>
+                <h3 class="text-center mb-4">@Localizer["EnterVerificationCode"]</h3>
                 <div class="d-flex justify-content-center gap-2">
                     @for (int i = 0; i < 6; i++)
                     {
@@ -31,7 +31,7 @@
                 <span asp-validation-for="Code" class="text-danger small"></span>
             </div>
             <div class="text-center">
-                <button class="btn btn-primary mt-4 d-block mx-auto" type="submit">Submit</button>
+                <button class="btn btn-primary mt-4 d-block mx-auto" type="submit">@Localizer["Submit"]</button>
             </div>
         </form>
     </div>

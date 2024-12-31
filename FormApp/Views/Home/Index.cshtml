@@ -5,7 +5,7 @@
 
 <div class="container w-100">
     <div class="border-bottom mb-1 mx-0">
-        <p class="text-center display-4">Welcome to <span class="fw-bolder">FormiX</span></p>
+        <p class="text-center display-4">@Localizer["WelcomeMessage"] <span class="fw-bolder">FormiX</span></p>
     </div>
 
     <!-- Carousel -->
@@ -61,7 +61,7 @@
 
     <!-- Latest Forms Section -->
     <div class="border-bottom border-top my-1 mx-0">
-        <p class="display-6">Latest Forms:</p>
+        <p class="display-6">@Localizer["LatestForms"]:</p>
     </div>
 
     <div class="row row-cols-1 row-cols-md-3 mx-auto d-flex justify-content-start">
@@ -83,9 +83,9 @@
                         <form>
                             <input type="hidden" name="idTemplate" value="@template.TemplateId" class="form-control" />
                             <div class="btn-group">
-                                <button formmethod="get" asp-controller="Answer" asp-action="OpenTemplate" class="btn btn-primary" type="submit">Open</button>
+                                <button formmethod="get" asp-controller="Answer" asp-action="OpenTemplate" class="btn btn-primary" type="submit">@Localizer["Open"]</button>
                                 <button formmethod="post" asp-controller="Template" asp-action="SaveTemplate" class="btn btn-outline-primary" type="submit">
-                                    <i class="bi bi-floppy"></i> Save
+                                    <i class="bi bi-floppy"></i> @Localizer["Save"]
                                 </button>
                             </div>
                         </form>

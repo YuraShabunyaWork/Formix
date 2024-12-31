@@ -4,13 +4,13 @@
     @switch (Model.TypeQuestion)
     {
         case QuestionType.Text:
-            <label class="form-label">Text question:</label>
+            <label class="form-label">@Localizer["Text"]:</label>
             break;
         case QuestionType.SingleChoice:
-            <label class="form-label">Single choice question:</label>
+            <label class="form-label">@Localizer["Single"]:</label>
             break;
         case QuestionType.MultipleChoice:
-            <label class="form-label">Multiple choice question:</label>
+            <label class="form-label">@Localizer["Multiple"]:</label>
             break;
     }
     <div class="mb-2 d-flex">
@@ -23,9 +23,9 @@
             </div>
             <div>
                 @if (Model.TypeQuestion == QuestionType.MultipleChoice
-                || Model.TypeQuestion == QuestionType.SingleChoice)
+           || Model.TypeQuestion == QuestionType.SingleChoice)
                 {
-                    <label class="form-label">Options answers:</label>
+                    <label class="form-label">@Localizer["Options"]:</label>
                     <ul>
                         @if (Model.OptionsAnswer.Count > 1)
                         {
@@ -58,7 +58,7 @@
                         }
                     </ul>
                     <button class="btn btn-sm btn-outline-success mt-2 add-option" type="button">
-                        <i class="bi bi-plus-circle"></i> Add Option
+                        <i class="bi bi-plus-circle"></i> @Localizer["AddOption"]
                     </button>
                 }
             </div>

@@ -3,7 +3,7 @@
     ViewData["TitleForm"] = "Edit Form";
 }
 <div class="container mb-3">
-    <p class="display-6 text-center">Edit Form</p>
+    <p class="display-6 text-center">@Localizer["EditForm"]</p>
     <form asp-controller="Template" asp-action="EditTemplate" method="post" enctype="multipart/form-data">
         <div class="row d-flex align-items-start">
             <input asp-for="Id" type="hidden" class="form-control" />
@@ -18,14 +18,14 @@
                 <div class="mb-4">
                     <div class="d-flex justify-content-center">
                         <label for="fileUpload" class="btn btn-sm btn-outline-primary">
-                            Choose Photo
+                            @Localizer["ChoosePhoto"]
                         </label>
                         <input id="fileUpload" asp-for="FilePhoto" type="file" class="btn btn-sm btn-outline-primary d-none" />
                     </div>
                 </div>
                 <div class="mb-2">
                     <select asp-for="TemplateType" class="form-select">
-                        <option value="0" selected>Select a topic</option>
+                        <option value="0" selected>@Localizer["SelectTopic"]</option>
                         <option value="1">Education</option>
                         <option value="2">Quiz</option>
                         <option value="3">Marketing</option>
@@ -39,12 +39,12 @@
                     <span asp-validation-for="TemplateType" class="text-danger small"></span>
                 </div>
                 <div class="mb-2">
-                    <label asp-for="Title" class="form-label"></label>
+                    <label asp-for="Title" class="form-label">@Localizer["Title"]</label>
                     <input asp-for="Title" type="text" class="form-control" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="mb-2">
-                    <label asp-for="Description" class="form-label"></label>
+                    <label asp-for="Description" class="form-label">@Localizer["Description"]</label>
                     <textarea asp-for="Description" class="form-control"></textarea>
                 </div>
             </div>
@@ -62,22 +62,22 @@
                 <div class="my-3">
                     <div class="dropdown">
                         <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">
-                            <i class="bi bi-plus-circle"></i> Add
+                            <i class="bi bi-plus-circle"></i> @Localizer["Add"]
                         </button>
                         <ul class="dropdown-menu">
                             <li>
                                 <button name="action" value="1" class="btn btn-success dropdown-item addPartialBtn" type="button">
-                                    Text question
+                                    @Localizer["Text"]
                                 </button>
                             </li>
                             <li>
                                 <button name="action" value="2" class="btn btn-success dropdown-item addPartialBtn" type="button">
-                                    Single choice question
+                                    @Localizer["Single"]
                                 </button>
                             </li>
                             <li>
                                 <button name="action" value="3" class="btn btn-success dropdown-item addPartialBtn" type="button">
-                                    Multiple choice question
+                                    @Localizer["Multiple"]
                                 </button>
                             </li>
                         </ul>
@@ -85,7 +85,7 @@
                 </div>
             </div>
             <div class="col-12 text-center">
-                <button type="submit" class="btn btn-success" id="create-button">Edit</button>
+                <button type="submit" class="btn btn-success" id="create-button">@Localizer["Edit"]</button>
             </div>
         </div>
     </form>

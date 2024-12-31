@@ -9,25 +9,25 @@
         <a asp-action="" asp-controller="">
             <img src="~/Logo.jpg" class="rounded-pill mb-2" style="height:15vh" />
         </a>
-        <p class="display-6">Sign up to <span class="fw-bolder">Formix</span></p>
+        <p class="display-6">@Localizer["SignUpTo"] <span class="fw-bolder">Formix</span></p>
     </div>
     <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 pt-0 bg-body-secondary small">
         <div asp-validation-summary="All" class="text-danger small"></div>
         <form asp-controller="Account" asp-action="Signup">
             <div class="mb-2">
-                <label asp-for="Login" class="form-label"></label>
-                <input asp-for="Login" type="text" class="form-control" placeholder="Enter Login" />
+                <label class="form-label">@Localizer["EnterLogin"]</label>
+                <input asp-for="Login" type="text" class="form-control" placeholder="@Localizer["EnterLogin"]" />
                 <span asp-validation-for="Login" class="text-danger small"></span>
             </div>
             <div class="mb-2">
-                <label asp-for="Email" class="form-label"></label>
-                <input asp-for="Email" type="email" class="form-control" placeholder="Enter Email" />
+                <label class="form-label">@Localizer["EnterEmail"]</label>
+                <input asp-for="Email" type="email" class="form-control" placeholder="@Localizer["EnterEmail"]" />
                 <span asp-validation-for="Email" class="text-danger small"></span>
             </div>
             <div class="mb-2">
-                <label asp-for="Password" class="form-label"></label>
-                <div class="input-group">
-                    <input asp-for="Password" type="password" id="password" class="form-control" placeholder="Enter Password" />
+                <label class="form-label">@Localizer["EnterPassword"]</label>
+                <div class="input-group pass">
+                    <input asp-for="Password" type="password" id="password" class="form-control" placeholder="@Localizer["EnterPassword"]" />
                     <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
                         <i id="toggleIcon" class="bi bi-eye"></i>
                     </button>
@@ -35,9 +35,9 @@
                 <span asp-validation-for="Password" class="text-danger small"></span>
             </div>
             <div class="mb-3">
-                <label asp-for="ConfirmPassword" class="form-label"></label>
-                <div class="input-group">
-                    <input asp-for="ConfirmPassword" type="password" id="password" class="form-control" placeholder="Confirm Password" />
+                <label class="form-label">@Localizer["ConfirmPassword"]</label>
+                <div class="input-group pass">
+                    <input asp-for="ConfirmPassword" type="password" id="password" class="form-control" placeholder="@Localizer["ConfirmPassword"]" />
                     <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
                         <i id="toggleIcon" class="bi bi-eye"></i>
                     </button>
@@ -45,7 +45,7 @@
                 <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-success">Sign up</button>
+                <button type="submit" class="btn btn-success">@Localizer["SignUp"]</button>
             </div>
         </form>
     </div>

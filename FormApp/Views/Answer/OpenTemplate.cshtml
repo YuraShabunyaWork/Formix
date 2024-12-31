@@ -72,7 +72,7 @@
                 </div>
                 <div class="text-center mt-3">
                     <div asp-validation-summary="All" class="text-danger"></div>
-                    <button type="submit" class="btn btn-success">Send answers</button>
+                    <button type="submit" class="btn btn-success">@Localizer["SendAnswers"]</button>
                 </div>
             </form>
         </div>
@@ -80,7 +80,7 @@
     <div class="d-flex justify-content-center mt-3">
         <div class="w-auto" style="max-width:60%; min-width:300px">
             <div class="border-bottom">
-                <h6>Comments:</h6>
+                <h6>@Localizer["Comments"]:</h6>
             </div>
             @foreach (var review in Model.ListReviews)
             {

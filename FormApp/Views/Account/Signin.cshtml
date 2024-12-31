@@ -12,22 +12,22 @@
         <a asp-action="" asp-controller="">
             <img src="~/Logo.jpg" class="rounded-pill mb-2" style="height:15vh" />
         </a>
-        <p class="display-6">Sign in to <span class="fw-bolder">Formix</span></p>
+        <p class="display-6">@Localizer["SignInTo"] <span class="fw-bolder">Formix</span></p>
     </div>
     <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
         <form asp-controller="Account" asp-action="Signin" method="post">
             <div class="mb-2">
-                <label asp-for="LoginOrEmail" class="form-label"></label>
-                <input asp-for="LoginOrEmail" type="text" class="form-control" placeholder="Enter Login or Email" />
+                <label class="form-label">@Localizer["EnterLoginOrEmail"]</label>
+                <input asp-for="LoginOrEmail" type="text" class="form-control" placeholder="@Localizer["EnterLoginOrEmail"]" />
                 <span asp-validation-for="LoginOrEmail" class="text-danger small"></span>
             </div>
             <div class="mb-2">
                 <div class="d-flex justify-content-between">
-                    <label asp-for="Password" class="form-label"></label>
-                    <a asp-action="ForgotPassword" asp-controller="Account" tabindex="-1" class="small">Forgot your password?</a>
+                    <label class="form-label">@Localizer["EnterPassword"]</label>
+                    <a asp-action="ForgotPassword" asp-controller="Account" tabindex="-1" class="small">@Localizer["ForgotYourPassword"]</a>
                 </div>
-                <div class="input-group">
-                    <input asp-for="Password" type="password" id="password" class="form-control" placeholder="Enter Password" />
+                <div class="input-group pass">
+                    <input asp-for="Password" type="password" id="password" class="form-control" placeholder="@Localizer["EnterPassword"]" />
                     <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
                         <i id="toggleIcon" class="bi bi-eye"></i>
                     </button>
@@ -36,13 +36,13 @@
             </div>
             <div class="mb-3">
                 <input asp-for="RememberMe" type="checkbox" class="form-check-inline me-0" />
-                <label asp-for="RememberMe" class="form-check-label"></label>
+                <label asp-for="RememberMe" class="form-check-label">@Localizer["RememberMe"]</label>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-success">Sign in</button>
+                <button type="submit" class="btn btn-success">@Localizer["SignIn"]</button>
             </div>
         </form>
-        <p class="text-center text-muted my-1 small">---------- or ----------</p>
+        <p class="text-center text-muted my-1 small">---------- @Localizer["or"] ----------</p>
         @{
             var schemes = await signInManager.GetExternalAuthenticationSchemesAsync();
             var loginProivders = schemes.ToList();

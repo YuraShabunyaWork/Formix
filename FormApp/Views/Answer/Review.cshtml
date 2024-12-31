@@ -4,7 +4,7 @@
 }
 <div class="container mt-5" style="width: 400px">
     <div class="text-center">
-        <p class="display-6">Review</p>
+        <p class="display-6">@Localizer["Review"]</p>
     </div>
     <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
         <form asp-controller="Answer" asp-action="Review" method="post">
@@ -25,8 +25,8 @@
                 <textarea asp-for="Comment" class="form-control"></textarea>
             </div>
             <div class="text-center m-2">
-                <button type="submit" class="btn btn-success">Send</button>
-                <a asp-action="" asp-controller="" class="btn btn-outline-secondary">Skip</a>
+                <button type="submit" class="btn btn-success">@Localizer["Send"]</button>
+                <a asp-action="" asp-controller="" class="btn btn-outline-secondary">@Localizer["Skip"]</a>
             </div>
         </form>
     </div>

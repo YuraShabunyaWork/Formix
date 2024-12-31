@@ -2,7 +2,7 @@
 @{
     ViewData["TitleForm"] = "Setting";
 }
-<h3 class="display-6 mb-4 ps-4" style="font-size:3rem">Settings:</h3>
+<h3 class="display-6 mb-4 ps-4" style="font-size:3rem">@Localizer["Settings"]:</h3>
 <div class="row">
     <div class="col-4 d-none d-md-block">
         <img src="@Model.UrlPhoto" class="img-thumbnail rounded-pill object-fit-cover border-0 w-100" />
@@ -10,7 +10,7 @@
     <div class="col-12 col-md p-1">
         <div class="row-cols-1 mb-2">
             <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
-                <h5>Two-factor authentication</h5>
+                <h5>@Localizer["TFAuthentication"]</h5>
                 <form asp-controller="UserMenu" asp-action="TwoFactor" method="post">
                     <div class="d-block mb-2">
                         <input asp-for="Email" type="hidden" />
@@ -18,17 +18,17 @@
                     </div>
                     <div class="d-block mb-3">
                         <input asp-for="IsTwoFactor" type="checkbox" />
-                        <label asp-for="IsTwoFactor">Enable two-factor authentication</label>
+                        <label asp-for="IsTwoFactor">@Localizer["ETFAuthentication"]</label>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-outline-primary">Save</button>
+                        <button type="submit" class="btn btn-outline-primary">@Localizer["Save"]</button>
                     </div>
                 </form>
             </div>
         </div>
         <div class="row-cols-1 mb-2">
             <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
-                <h5>Change email address</h5>
+                <h5>@Localizer["ChangeEmailAddress"]</h5>
                 <form asp-controller="UserMenu" asp-action="ChangeEmail" method="post">
                     <input asp-for="UrlPhoto" type="hidden" />
                     <div class="d-block mb-2">
@@ -36,56 +36,56 @@
                         <label>@Model.Email</label>
                     </div>
                     <div class="d-block mb-2">
-                        <label class="mb-2">Enter new Email</label>
+                        <label class="mb-2">@Localizer["EnterNewEmail"]</label>
                         <input asp-for="Email" value="" type="email" class="form-control"/>
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-outline-primary">Change</button>
+                        <button type="submit" class="btn btn-outline-primary">@Localizer["Change"]</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <div class="col-12 col-md p-1 me-3">
-            <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
-                <h5>Reset Password</h5>
-                <form asp-controller="UserMenu" asp-action="ResetPassword" method="post">
-                    <input asp-for="Email" type="hidden" />
-                    <input asp-for="UrlPhoto" type="hidden" />
-                    <div class="mb-2">
-                        <label asp-for="OldPassword" class="form-label"></label>
-                        <div class="input-group">
-                            <input asp-for="OldPassword" type="password" id="oldPassword" class="form-control" />
-                            <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
-                                <i id="toggleIcon" class="bi bi-eye"></i>
-                            </button>
-                        </div>
-                    <span asp-validation-for="OldPassword" class="text-danger small"></span>
+        <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
+            <h5>@Localizer["ResetPassword"]</h5>
+            <form asp-controller="UserMenu" asp-action="ResetPassword" method="post">
+                <input asp-for="Email" type="hidden" />
+                <input asp-for="UrlPhoto" type="hidden" />
+                <div class="mb-2">
+                    <label asp-for="OldPassword" class="form-label">@Localizer["OldPassword"]</label>
+                    <div class="input-group pass">
+                        <input asp-for="OldPassword" type="password" id="password" class="form-control" />
+                        <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
+                            <i id="toggleIcon" class="bi bi-eye"></i>
+                        </button>
                     </div>
-                    <div class="mb-2">
-                        <label asp-for="NewPassword" class="form-label"></label>
-                        <div class="input-group">
-                            <input asp-for="NewPassword" type="password" id="newPassword" class="form-control" />
-                            <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
-                                <i id="toggleIcon" class="bi bi-eye"></i>
-                            </button>
-                        </div>
+                <span asp-validation-for="OldPassword" class="text-danger small"></span>
+                </div>
+                <div class="mb-2">
+                    <label asp-for="NewPassword" class="form-label">@Localizer["NewPassword"]</label>
+                    <div class="input-group pass">
+                        <input asp-for="NewPassword" type="password" id="password" class="form-control" />
+                        <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
+                            <i id="toggleIcon" class="bi bi-eye"></i>
+                        </button>
                     </div>
-                    <div class="mb-2">
-                        <label asp-for="ConfirmPassword" class="form-label"></label>
-                        <div class="input-group">
-                            <input asp-for="ConfirmPassword" type="password" id="confirmPassword" class="form-control" />
-                            <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
-                                <i id="toggleIcon" class="bi bi-eye"></i>
-                            </button>
-                        </div>
+                </div>
+                <div class="mb-2">
+                    <label asp-for="ConfirmPassword" class="form-label">@Localizer["ConfirmPassword"]</label>
+                    <div class="input-group pass">
+                        <input asp-for="ConfirmPassword" type="password" id="password" class="form-control" />
+                        <button type="button" id="togglePassword" tabindex="-1" class="btn btn-outline-secondary">
+                            <i id="toggleIcon" class="bi bi-eye"></i>
+                        </button>
                     </div>
-                    <div class="d-block">
-                        <button type="submit" class="btn btn-outline-primary w-100">Reset</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="d-block">
+                    <button type="submit" class="btn btn-outline-primary w-100">@Localizer["Reset"]</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <script src="~/js/PasswordEye.js"></script>

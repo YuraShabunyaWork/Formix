@@ -3,21 +3,27 @@
 }
 <div class="container" style="max-width: 400px;">
     <div class="text-center mb-4">
-        <p class="display-6 fw-bold">Reset Answer</p>
+        <p class="display-6 fw-bold">@Localizer["ResetAnswer"]</p>
     </div>
     <div class="border border-1 rounded-3 shadow-sm p-4 bg-body-secondary bg-opacity-75">
         <form asp-controller="Answer" asp-action="ResetAnswer" method="post">
             <div class="mb-3">
                 <p class="fs-5 text-center">
-                    You have already filled out this form. Would you like to fill it out again?
+                    @Localizer["H1"]
                     <br />
-                    <span class="text-muted">Your previous response will be deleted.</span>
+                    <span class="text-muted small">
+                        @Localizer["H2"]
+                    </span>
                 </p>
             </div>
 
             <div class="text-center">
-                <button type="submit" class="btn btn-success btn-lg me-3">Yes</button>
-                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary btn-lg">No</a>
+                <button type="submit" class="btn btn-success btn-lg me-3">
+                    @Localizer["Yes"]
+                </button>
+                <a asp-action="Index" asp-controller="Home" class="btn btn-outline-secondary btn-lg">
+                    @Localizer["No"]
+                </a>
             </div>
         </form>
     </div>

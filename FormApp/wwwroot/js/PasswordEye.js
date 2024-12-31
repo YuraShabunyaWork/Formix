@@ -1,4 +1,4 @@
-﻿document.querySelectorAll('.input-group').forEach(group => {
+﻿document.querySelectorAll('.pass').forEach(group => {
     const togglePasswordButton = group.querySelector('#togglePassword');
     const passwordInput = group.querySelector('input[type="password"]');
     const toggleIcon = group.querySelector('#toggleIcon');

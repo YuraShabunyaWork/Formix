@@ -6,7 +6,7 @@
 }
 else
 {
-    <h3 class="display-6 mb-4">Your templates</h3>
+    <h3 class="display-6 mb-4">@Localizer["YourTemplates"]:</h3>
     <div class="container-lg w-75">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mx-auto">
             @foreach (var template in Model)
@@ -29,10 +29,10 @@ else
                             </div>
                             <div class="card-footer mt-auto d-flex justify-content-between">
                                 <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#@template.Id-review">
-                                    Reviews
+                                    @Localizer["Reviews"]
                                 </button>
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#@template.Id-template">
-                                    Answers
+                                    @Localizer["Answers"]
                                 </button>
                             </div>
                         </form>
