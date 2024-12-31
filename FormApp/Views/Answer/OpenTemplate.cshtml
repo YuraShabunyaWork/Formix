@@ -1,4 +1,7 @@
 ﻿@model TemplateViewModel
+@{
+    ViewData["TitleForm"] = @Model.Title;
+}
 <div class="container mb-3">
     <div class="row d-flex align-items-start">
         <div class="col-12 col-md-4 border border-1 rounded-3 shadow bg-opacity-50 p-4 m-1 bg-body-secondary">
@@ -22,7 +25,7 @@
             </div>
             <div class="d-flex justify-content-center">
                 <img id="previewImage"
-                     src="@(Model == null ? "/Logo.png" : Model.UrlPhoto)"
+                     src="@(Model == null ? "/Logo.jpg" : Model.UrlPhoto)"
                      class="img-thumbnail bg-body-secondary rounded-2 border-0 mb-2 object-fit-cover"
                      style="width: 100%; max-width: 250px; height: 250px; object-position: center;" />
             </div>

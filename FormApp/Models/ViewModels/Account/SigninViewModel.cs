@@ -2,7 +2,7 @@
 
 namespace Formix.Models.ViewModels.Account
 {
-    public class SinginViewModel
+    public class SigninViewModel
     {
         [Required]
         [Display(Name = "Login or Email")]

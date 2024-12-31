@@ -1,21 +1,21 @@
-﻿@model SinginViewModel
+﻿@model SigninViewModel
 @using Formix.Models.DB
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> signInManager
 @{
-    ViewData["TitleForm"] = "Sing in";
+    ViewData["TitleForm"] = "Sign In";
     Layout = "_LayoutAccount.cshtml";
 }
 
 <div class="container-fluid" style="width: 400px; min-width:300px">
     <div class="text-center">
         <a asp-action="" asp-controller="">
-            <img src="~/logo.png" class="rounded-pill mb-2" style="height:15vh" />
+            <img src="~/Logo.jpg" class="rounded-pill mb-2" style="height:15vh" />
         </a>
-        <p class="display-6">Sing in to <span class="fw-bolder">Formix</span></p>
+        <p class="display-6">Sign in to <span class="fw-bolder">Formix</span></p>
     </div>
     <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
-        <form asp-controller="Account" asp-action="Singin" method="post">
+        <form asp-controller="Account" asp-action="Signin" method="post">
             <div class="mb-2">
                 <label asp-for="LoginOrEmail" class="form-label"></label>
                 <input asp-for="LoginOrEmail" type="text" class="form-control" placeholder="Enter Login or Email" />
@@ -39,7 +39,7 @@
                 <label asp-for="RememberMe" class="form-check-label"></label>
             </div>
             <div class="text-center">
-                <button type="submit" class="btn btn-success">Sing in</button>
+                <button type="submit" class="btn btn-success">Sign in</button>
             </div>
         </form>
         <p class="text-center text-muted my-1 small">---------- or ----------</p>

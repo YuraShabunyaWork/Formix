@@ -61,7 +61,7 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Account/Singin";
+    options.LoginPath = "/Account/Signin";
     options.LogoutPath = "/Account/Logout";
 });
 

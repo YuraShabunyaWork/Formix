@@ -1,4 +1,7 @@
-﻿@model ProfileViewModel
+﻿@{
+    ViewData["TitleForm"] = "Edit Profile";
+}
+@model ProfileViewModel
 <h3 class="display-6 mb-4 ps-4" style="font-size:3rem">Your profile:</h3>
 <form asp-controller="UserMenu" asp-action="EditProfile" method="post" enctype="multipart/form-data">
     <input asp-for="Email" type="hidden"/>

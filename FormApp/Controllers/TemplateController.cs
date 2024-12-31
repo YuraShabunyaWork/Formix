@@ -51,7 +51,7 @@ namespace Formix.Controllers
             }
             else
             {
-                newUrl = "/Logo.png";
+                newUrl = "/Logo.jpg";
             }
             var template = new Template
             {

@@ -33,7 +33,7 @@ namespace Formix.Controllers
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
-                return RedirectToAction("Singup", "Account");
+                return RedirectToAction("Signup", "Account");
             
             if (await _answerRepository.AnswerForUserExistsAsync(userId, idTemplate))
             {
@@ -77,7 +77,7 @@ namespace Formix.Controllers
             var templateId = (int)TempData["templateId"]!;
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-                return RedirectToAction("Singup", "Account");
+                return RedirectToAction("Signup", "Account");
 
             if(await _answerRepository.AnswerForUserExistsAsync(user.Id, templateId))
             {
@@ -96,7 +96,7 @@ namespace Formix.Controllers
 
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrEmpty(userId))
-                return RedirectToAction("Singup", "Account");
+                return RedirectToAction("Signup", "Account");
 
             for (int i = 0; i < answerView.Response.Length; i++)
                 for (int j = 0; j < answerView.Response[i].Length; j++)
@@ -134,7 +134,7 @@ namespace Formix.Controllers
             if (user == null) 
             {
                 ModelState.AddModelError("", "User does not exist");
-                return RedirectToAction("Singup","Account");
+                return RedirectToAction("Signup","Account");
             }
             var review = new Review
             {

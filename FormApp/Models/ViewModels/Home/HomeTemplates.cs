@@ -1,6 +1,4 @@
-﻿using Formix.Models.ViewModels.Answer;
-
-namespace Formix.Models.ViewModels.Home
+﻿namespace Formix.Models.ViewModels.Home
 {
     public class HomeTemplates
     {

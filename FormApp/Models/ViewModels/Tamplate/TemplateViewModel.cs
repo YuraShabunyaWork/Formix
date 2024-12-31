@@ -18,7 +18,7 @@ namespace Formix.Models.ViewModels.Template
         [Required(ErrorMessage = "Please select a topic.")]
         [Range(1, 9, ErrorMessage = "Invalid topic selected.")]
         public TemplateType TemplateType { get; set; }
-        public string UrlPhoto { get; set; } = "/Logo.png";
+        public string UrlPhoto { get; set; } = "/Logo.jpg";
         public IFormFile? FilePhoto { get; set; }
         [Required]
         public List<QuestionViewModel> Questions { get; set; }

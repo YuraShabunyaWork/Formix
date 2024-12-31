@@ -2,8 +2,6 @@
 using Formix.Models.DB;
 using Formix.Models.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -29,41 +27,41 @@ namespace Formix.Controllers
         }
 
         [HttpGet]
-        public IActionResult Singup()
+        public IActionResult Signup()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Singup(SingupViewModel singupView)
+        public async Task<IActionResult> Signup(SignupViewModel signupView)
         {
             if (!ModelState.IsValid)
             {
-                return View(singupView);
+                return View(signupView);
             }
-            if(await _userManager.FindByEmailAsync(singupView.Email) != null 
-                && await _userManager.FindByNameAsync(singupView.Login) != null)
+            if(await _userManager.FindByEmailAsync(signupView.Email) != null 
+                && await _userManager.FindByNameAsync(signupView.Login) != null)
             {
                 ModelState.AddModelError("", "This user already exists");
-                return View(singupView);
+                return View(signupView);
             }
             
-            TempData["ConfirmationCode"] = await _generateEmail.CodeAsync(singupView.Email);
-            TempData["Action"] = "Singup";
+            TempData["ConfirmationCode"] = await _generateEmail.CodeAsync(signupView.Email);
+            TempData["Action"] = "Signup";
             var confirmationEmailView = new ConfirmationEmailViewModel
             {
-                Login = singupView.Login,
-                Email = singupView.Email,
-                Password = singupView.Password,
+                Login = signupView.Login,
+                Email = signupView.Email,
+                Password = signupView.Password,
             };
             return View("ConfirmationEmail", confirmationEmailView);
         }
         [HttpGet]
-        public IActionResult Singin()
+        public IActionResult Signin()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Singin(SinginViewModel model)
+        public async Task<IActionResult> Signin(SigninViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -80,7 +78,7 @@ namespace Formix.Controllers
             if (user.TwoFactorEnabled && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 TempData["ConfirmationCode"] = await _generateEmail.CodeAsync(user.Email);
-                TempData["Action"] = "Singin";
+                TempData["Action"] = "Signin";
 
                 return View("ConfirmationEmail", new ConfirmationEmailViewModel
                 {
@@ -130,7 +128,7 @@ namespace Formix.Controllers
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(Singin));
+                return RedirectToAction(nameof(Signin));
             }
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             var user = await _userManager.FindByEmailAsync(email!);
@@ -145,7 +143,7 @@ namespace Formix.Controllers
                 if (!createResult.Succeeded)
                 {
                     ModelState.AddModelError(string.Empty, "Failed to create user.");
-                    return RedirectToAction("Singin");
+                    return RedirectToAction("Signin");
                 }
             }
             var userPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
@@ -250,7 +248,7 @@ namespace Formix.Controllers
                 return View(resetView);
             }
 
-            return RedirectToAction("Singin", "Account");
+            return RedirectToAction("Signin", "Account");
         }
         [HttpPost]
         public async Task<IActionResult> ConfirmationEmail(ConfirmationEmailViewModel model)
@@ -264,7 +262,7 @@ namespace Formix.Controllers
                 return View();
             }
             
-            if (action == "Singup")
+            if (action == "Signup")
             {
                 var user = new AppUser { UserName = model.Login, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
@@ -280,17 +278,17 @@ namespace Formix.Controllers
                     if (error != null)
                     {
                         ModelState.AddModelError(error.Code, error.Description);
-                        return View("Singup", new SingupViewModel { Login = model.Login, Email = model.Email });
+                        return View("Signup", new SignupViewModel { Login = model.Login, Email = model.Email });
                     }
                 }
             }
-            if (action == "Singin")
+            if (action == "Signin")
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null)
                 {
                     ModelState.AddModelError("LoginOrEmail", "User does not exist");
-                    return View("Singin", new SinginViewModel { });
+                    return View("Signin", new SigninViewModel { });
                 }
 
                 var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, lockoutOnFailure: true);
@@ -311,7 +309,7 @@ namespace Formix.Controllers
                 ModelState.AddModelError(result.IsLockedOut ? "LoginOrEmail" : "Password",
                                          result.IsLockedOut ? "User locked" : "Wrong password");
 
-                return View("Singin", new SinginViewModel { });
+                return View("Signin", new SigninViewModel { });
             }
             if(action == "ChangeEmail" && model.Email != null)
             {

@@ -13,7 +13,7 @@ namespace Formix.Models.DB
         public string? Title { get; set; }
         [MaxLength(500)]
         public string Description { get; set; } = string.Empty;
-        public string UrlPhoto { get; set; } = "/Logo.png";
+        public string UrlPhoto { get; set; } = "/Logo.jpg";
         [Required]
         public TemplateType TemplateType { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

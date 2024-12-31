@@ -2,7 +2,7 @@
 
 namespace Formix.Models.ViewModels.Account
 {
-    public class SingupViewModel
+    public class SignupViewModel
     {
         [Required]
         [RegularExpression("^[a-z0-9\\-._@]+$",

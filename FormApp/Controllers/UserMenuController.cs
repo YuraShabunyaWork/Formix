@@ -137,7 +137,7 @@ namespace Formix.Controllers
                     return View(userAnswer);
                 }
             }
-            return RedirectToAction("Singin","Account");
+            return RedirectToAction("Signin","Account");
         }
         [HttpGet]
         public async Task<IActionResult> EditProfile()
@@ -167,7 +167,7 @@ namespace Formix.Controllers
             var userApp = await _userManager.GetUserAsync(User);
             if (userApp == null)
             {
-                return RedirectToAction("Singup", "Account");
+                return RedirectToAction("Signup", "Account");
             }   
 
             userApp.FirstName = profileView.FirstName;
@@ -212,7 +212,7 @@ namespace Formix.Controllers
             if (userApp == null)
             {
                 ModelState.AddModelError("User", "User does not exist");
-                return RedirectToAction("Singup","Account");
+                return RedirectToAction("Signup","Account");
             }
             var settingView = new SettingsViewModel
             {
@@ -229,7 +229,7 @@ namespace Formix.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("User", "User does not exist");
-                return RedirectToAction("Singup", "Account");
+                return RedirectToAction("Signup", "Account");
             }
             user.TwoFactorEnabled = settingsView.IsTwoFactor;
             var result = await _userManager.UpdateAsync(user);
@@ -254,7 +254,7 @@ namespace Formix.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("User", "User does not exist");
-                return RedirectToAction("Singup", "Account");
+                return RedirectToAction("Signup", "Account");
             }
 
             var result = await _userManager.ChangePasswordAsync(user, settingsView.OldPassword, settingsView.NewPassword);

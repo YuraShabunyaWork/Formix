@@ -1,7 +1,4 @@
-﻿using Azure;
-using System.ComponentModel.DataAnnotations;
-
-namespace Formix.Models.ViewModels.Answer
+﻿namespace Formix.Models.ViewModels.Answer
 {
     public class AnswerViewModel
     {

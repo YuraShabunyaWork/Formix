@@ -1,11 +1,13 @@
 ﻿@model ConfirmationEmailViewModel
-
+@{
+    ViewData["TitleForm"] = "Confirmation Email";
+}
 <div class="container-fluid" style="width: 400px; min-width:300px">
     <div class="text-center">
         <a asp-action="" asp-controller="">
-            <img src="~/logo.png" class="rounded-pill mb-2" style="height:15vh" />
+            <img src="~/Logo.jpg" class="rounded-pill mb-2" style="height:15vh" />
         </a>
-        <p class="display-6">Sing in to <span class="fw-bolder">Formix</span></p>
+        <p class="display-6">Sign in to <span class="fw-bolder">Formix</span></p>
     </div>
     <div class="border border-1 rounded-3 shadow shadow-sm bg-opacity-50 p-4 bg-body-secondary small">
         <form asp-controller="Account" asp-action="ConfirmationEmail" method="post">
