@@ -23,7 +23,7 @@
                             aria-controls="offcanvasLeft">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <a class="navbar-brand p-0" asp-controller="Home" asp-action="Index">
+                    <a class="navbar-brand p-0 me-1" asp-controller="Home" asp-action="Index">
                         <img src="~/Logo.jpg" class="rounded-pill" style="height:6vh;" />
                         <label class="d-none d-md-inline-block">FormiX</label>
                     </a>
@@ -48,10 +48,6 @@
                             </form>
                         </div>
                         <div class="btn-group dropstart">
-                            <p class="m-0 align-self-center me-2">
-                                <a class="btn btn-outline-secondary btn-sm border-0 px-1 py-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="en" asp-route-returnUrl="@Context.Request.Path">En</a>|
-                                <a class="btn btn-outline-secondary btn-sm border-0 px-1 py-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="ru" asp-route-returnUrl="@Context.Request.Path">Ru</a>
-                            </p>
                             <button class="btn btn-light border-2 rounded-pill text-black p-0"
                                     type="button"
                                     data-bs-toggle="dropdown" 
@@ -95,6 +91,13 @@
                                     <li>
                                         <a asp-controller="Account" asp-action="Logout" class="btn w-100 btn-outline-secondary border-0 text-start">@Localizer["LogOut"]</a>
                                     </li>
+                                    <li>
+                                        <p class="w-100 text-center m-0 align-self-center me-1 me-md-2">
+                                            <a class="btn btn-outline-secondary btn-sm border-0 p-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="en" asp-route-returnUrl="@Context.Request.Path">En</a>
+                                            <span>|</span>
+                                            <a class="btn btn-outline-secondary btn-sm border-0 p-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="ru" asp-route-returnUrl="@Context.Request.Path">Ru</a>
+                                        </p>
+                                    </li>
                                 </ul>
                             }
                         </div>
@@ -104,9 +107,10 @@
                 {
                     <div class="d-flex align-items-center">
                         <div>
-                            <p class="m-0">              
-                                <a class="btn btn-outline-secondary btn-sm border-0 px-1 py-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="en" asp-route-returnUrl="@Context.Request.Path">En</a>|
-                                <a class="btn btn-outline-secondary btn-sm border-0 px-1 py-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="ru" asp-route-returnUrl="@Context.Request.Path">Ru</a>
+                            <p class="m-0 align-self-center me-1 me-md-2">
+                                <a class="btn btn-outline-secondary btn-sm border-0 p-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="en" asp-route-returnUrl="@Context.Request.Path">En</a>
+                                <span>|</span>
+                                <a class="btn btn-outline-secondary btn-sm border-0 p-0" asp-controller="Language" asp-action="SetLanguage" asp-route-culture="ru" asp-route-returnUrl="@Context.Request.Path">Ru</a>
                             </p>
                         </div>
                         <div>
